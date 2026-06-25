@@ -1,6 +1,9 @@
 # Maharet Mantı — Google Yorumları
 
-[Maharet Mantı & Kayseri Yağlaması](https://www.google.com/maps/place/Maharet+Mant%C4%B1+%26+Kayseri+Ya%C4%9Flamas%C4%B1) (Bayraklı/İzmir) işletmesinin **Google Maps yorumlarını** çekip basit bir web arayüzünde gösteren küçük bir uygulama.
+Maharet Mantı'nın **Google Maps yorumlarını** çekip basit bir web arayüzünde gösteren küçük bir uygulama. Çok şubeli: üstteki seçiciyle şube değiştirilir.
+
+- **Ankara / Çankaya** — Maharet Mantı Ankara & Kayseri Yağlaması
+- **İzmir / Bayraklı** — Maharet Mantı & Kayseri Yağlaması
 
 **Canlı (statik) sürüm:** https://abdullahmutllu.github.io/maharet-yorumlari/
 
@@ -19,8 +22,9 @@ Her yorum: yazar, profil fotoğrafı, puan, metin, göreli tarih, işletme yanı
 
 ```bash
 npm install
-npm run scrape     # tüm yorumları çeker -> data/reviews.json
-npm start          # http://localhost:4545 (arama + puan filtresi + sıralama + Yenile)
+npm run scrape            # tüm şubeleri çeker -> data/reviews-<slug>.json
+npm run scrape ankara     # sadece tek şube
+npm start                 # http://localhost:4545 (şube seçici + arama + filtre + sıralama + Yenile)
 ```
 
 > Headless çalışır. Görünür tarayıcı için: `HEADLESS=0 npm run scrape`
@@ -43,11 +47,13 @@ Pages kaynağı: `main` dalı, `/docs` klasörü. (Statik sürümde "Yenile" giz
 
 | Dosya | İşlev |
 |------|------|
-| `config.js` | İşletme URL'i, adı, port |
-| `scrape.js` | Playwright ile tüm yorumları çeker → `data/reviews.json` |
-| `server.js` | Express: statik arayüz + `/api/reviews` + `/api/scrape` |
-| `public/` | Tek sayfalık arayüz (index.html, app.js, styles.css) |
-| `build-static.js` | GitHub Pages için `docs/` üretir |
+| `config.js` | Şubeler (`BRANCHES`: slug, label, ad, URL) ve port |
+| `scrape.js` | Playwright ile şube yorumlarını çeker → `data/reviews-<slug>.json` |
+| `server.js` | Express: arayüz + `/api/branches` + `/api/reviews?branch=` + `/api/scrape?branch=` |
+| `public/` | Tek sayfalık arayüz (şube seçici, index.html, app.js, styles.css) |
+| `build-static.js` | GitHub Pages için `docs/` üretir (her şube JSON'u + `branches.json`) |
+
+Yeni şube eklemek: `config.js`'teki `BRANCHES` dizisine `{ slug, label, name, placeUrl }` ekle, `npm run scrape <slug>` çalıştır.
 
 ## Not
 

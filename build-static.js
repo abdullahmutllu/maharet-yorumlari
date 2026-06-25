@@ -1,14 +1,17 @@
-// GitHub Pages için statik build üretir: public/ dosyalarını ve son çekilen
-// data/reviews.json'u docs/ klasörüne kopyalar. Pages "main /docs" kaynağından sunar.
+// GitHub Pages için statik build üretir: public/ dosyalarını, her şubenin
+// data/reviews-<slug>.json verisini ve bir branches.json manifestini docs/ klasörüne kopyalar.
+// Pages "main /docs" kaynağından sunar.
 //
 // Kullanım: npm run build  (önce: npm run scrape ile veriyi güncelle)
 
-import { mkdir, copyFile, writeFile, readFile } from "node:fs/promises";
+import { mkdir, copyFile, writeFile, readFile, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { BRANCHES } from "./config.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DOCS = join(__dirname, "docs");
+const DATA = join(__dirname, "data");
 
 await mkdir(DOCS, { recursive: true });
 
@@ -17,17 +20,27 @@ for (const f of ["index.html", "app.js", "styles.css"]) {
   await copyFile(join(__dirname, "public", f), join(DOCS, f));
 }
 
-// çekilen yorumlar (statik sürümün veri kaynağı)
-try {
-  const data = await readFile(join(__dirname, "data", "reviews.json"), "utf8");
-  await writeFile(join(DOCS, "reviews.json"), data, "utf8");
-  const parsed = JSON.parse(data);
-  console.log(`docs/reviews.json yazıldı — ${parsed.count} yorum.`);
-} catch {
-  console.warn("UYARI: data/reviews.json bulunamadı. Önce `npm run scrape` çalıştır.");
+// eski tek-şube dosyası varsa temizle
+await rm(join(DOCS, "reviews.json"), { force: true });
+
+// her şubenin verisini kopyala
+const manifest = [];
+for (const b of BRANCHES) {
+  try {
+    const data = await readFile(join(DATA, `reviews-${b.slug}.json`), "utf8");
+    await writeFile(join(DOCS, `reviews-${b.slug}.json`), data, "utf8");
+    const parsed = JSON.parse(data);
+    manifest.push({ slug: b.slug, label: b.label });
+    console.log(`docs/reviews-${b.slug}.json — ${parsed.count} yorum.`);
+  } catch {
+    console.warn(`UYARI: data/reviews-${b.slug}.json yok. Önce: npm run scrape ${b.slug}`);
+  }
 }
 
-// Jekyll işlemesini kapat (dosyalar olduğu gibi sunulsun)
+// şube manifesti (frontend statik modda bunu okur)
+await writeFile(join(DOCS, "branches.json"), JSON.stringify(manifest, null, 2), "utf8");
+
+// Jekyll işlemesini kapat
 await writeFile(join(DOCS, ".nojekyll"), "", "utf8");
 
-console.log("Statik build hazır: docs/");
+console.log(`Statik build hazır: docs/ (${manifest.length} şube)`);

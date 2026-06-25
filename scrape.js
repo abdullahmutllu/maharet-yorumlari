@@ -13,11 +13,10 @@ import { chromium } from "playwright";
 import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
-import { PLACE_URL, BUSINESS_NAME } from "./config.js";
+import { BRANCHES, branchBySlug } from "./config.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, "data");
-const OUT_FILE = join(DATA_DIR, "reviews.json");
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
@@ -219,18 +218,19 @@ async function scrollToEnd(page, { total, label, maxScrolls = 800 }) {
     if (res.h === lastH) stable++;
     else { stable = 0; lastH = res.h; }
 
-    if (i % 5 === 0) console.log(`  [${label}] benzersiz: ${size}${total ? ` / ~${total}` : ""}`);
+    if (i % 8 === 0) console.log(`  [${label}] benzersiz: ${size}${total ? ` / ~${total}` : ""}`);
 
     if (total && size >= total) break;
-    if (stable >= 25) break; // feed yüksekliği uzun süre sabit -> bu sıralamada son
-    await sleep(1100);
+    if (stable >= 16) break; // feed yüksekliği uzun süre sabit -> bu sıralamada son
+    await sleep(700);
   }
   return size;
 }
 
-export async function runScrape({ headless = process.env.HEADLESS !== "0", maxScrolls = 600 } = {}) {
-  const searchUrl = buildSearchUrl(PLACE_URL, BUSINESS_NAME);
-  console.log(`Yorumlar çekiliyor: ${BUSINESS_NAME}`);
+export async function runScrape(branch, { headless = process.env.HEADLESS !== "0", maxScrolls = 600 } = {}) {
+  const outFile = join(DATA_DIR, `reviews-${branch.slug}.json`);
+  const searchUrl = buildSearchUrl(branch.placeUrl, branch.name);
+  console.log(`\n######## Şube: ${branch.label} (${branch.name}) ########`);
   console.log(`Arama URL: ${searchUrl}`);
   console.log(`Tarayıcı modu: ${headless ? "headless" : "görünür"}`);
 
@@ -280,8 +280,12 @@ export async function runScrape({ headless = process.env.HEADLESS !== "0", maxSc
     await dismissConsent(warm);
     await warm.close().catch(() => {});
 
+    // 2) Sıralama geçişlerini PARALEL çalıştır — her biri taze sayfada, aynı anda kaydırır.
+    //    (Ardışık 4 geçiş yerine ~tek geçiş süresinde biter.) Tespiti azaltmak için
+    //    sayfa açılışları kademeli başlatılır.
     let total = null;
-    for (const s of sorts) {
+    const runPass = async (s, idx) => {
+      await sleep(idx * 2000); // kademeli başlat
       const page = await context.newPage();
       try {
         await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
@@ -298,20 +302,24 @@ export async function runScrape({ headless = process.env.HEADLESS !== "0", maxSc
         }
 
         const applied = await applySort(page, s.name);
-        console.log(`\n=== Sıralama: ${s.key}${applied ? "" : " (uygulanamadı; varsayılan sıra)"} ===`);
-        await sleep(1200);
+        console.log(`=== Sıralama (paralel): ${s.key}${applied ? "" : " (uygulanamadı; varsayılan sıra)"} ===`);
+        await sleep(1000);
 
         await scrollToEnd(page, { total, label: s.key, maxScrolls });
         const arr = await page.evaluate(() => window.__dump());
-        for (const r of arr) merged.set(keyOf(r), r);
-        console.log(`"${s.key}" bitti — bu geçiş: ${arr.length}, birleşik toplam: ${merged.size}`);
+        console.log(`"${s.key}" bitti — bu geçiş: ${arr.length}`);
+        return arr;
       } catch (e) {
         console.warn(`[${s.key}] hata: ${e.message}`);
+        return [];
       } finally {
         await page.close().catch(() => {});
       }
-      if (total && merged.size >= total) { console.log("Hedefe ulaşıldı."); break; }
-    }
+    };
+
+    const passArrays = await Promise.all(sorts.map((s, i) => runPass(s, i)));
+    for (const arr of passArrays) for (const r of arr) merged.set(keyOf(r), r);
+    console.log(`Birleşik toplam: ${merged.size}`);
 
     reviews = [...merged.values()];
   } finally {
@@ -334,8 +342,9 @@ export async function runScrape({ headless = process.env.HEADLESS !== "0", maxSc
     : 0;
 
   const payload = {
-    business: BUSINESS_NAME,
-    sourceUrl: PLACE_URL,
+    branch: { slug: branch.slug, label: branch.label },
+    business: branch.name,
+    sourceUrl: branch.placeUrl,
     scrapedAt: new Date().toISOString(),
     count,
     averageRating,
@@ -343,15 +352,32 @@ export async function runScrape({ headless = process.env.HEADLESS !== "0", maxSc
   };
 
   await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(OUT_FILE, JSON.stringify(payload, null, 2), "utf8");
+  await writeFile(outFile, JSON.stringify(payload, null, 2), "utf8");
 
-  console.log(`\nÇekilen yorum sayısı: ${count}, ortalama: ${averageRating}`);
-  console.log(`Kaydedildi: ${OUT_FILE}`);
+  console.log(`\n[${branch.label}] Çekilen yorum sayısı: ${count}, ortalama: ${averageRating}`);
+  console.log(`Kaydedildi: ${outFile}`);
   return payload;
 }
 
+// Tüm şubeleri (veya CLI ile verilen tek şubeyi) sırayla çeker.
+export async function runAll(slug) {
+  const targets = slug ? [branchBySlug(slug)].filter(Boolean) : BRANCHES;
+  if (!targets.length) {
+    throw new Error(`Şube bulunamadı: "${slug}". Geçerli: ${BRANCHES.map((b) => b.slug).join(", ")}`);
+  }
+  const results = [];
+  for (const branch of targets) {
+    results.push(await runScrape(branch));
+  }
+  console.log(`\n==== Özet ====`);
+  for (const r of results) console.log(`${r.branch.label}: ${r.count} yorum, ort. ${r.averageRating}`);
+  return results;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  runScrape().catch((e) => {
+  // Kullanım: node scrape.js            -> tüm şubeler
+  //           node scrape.js ankara     -> sadece "ankara"
+  runAll(process.argv[2]).catch((e) => {
     console.error("Çekme başarısız:", e);
     process.exit(1);
   });

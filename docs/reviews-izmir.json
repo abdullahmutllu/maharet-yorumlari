@@ -17216,5 +17216,9 @@
       "response": null,
       "images": null
     }
-  ]
+  ],
+  "branch": {
+    "slug": "izmir",
+    "label": "İzmir / Bayraklı"
+  }
 }

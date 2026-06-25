@@ -234,7 +234,8 @@ h1 {
   font-size: 0.85rem;
 }
 
-.sort select {
+.sort select,
+.branch-pick select {
   font: inherit;
   font-size: 0.9rem;
   padding: 8px 10px;
@@ -243,6 +244,17 @@ h1 {
   background: var(--surface);
   color: var(--ink);
   cursor: pointer;
+}
+
+.branch-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.branch-pick select {
+  font-weight: 600;
 }
 
 .result-count {

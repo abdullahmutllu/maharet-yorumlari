@@ -7,6 +7,8 @@ const state = {
   search: "",
   rating: "all",
   sort: "newest",
+  branch: null,       // seçili şube slug'ı
+  staticMode: false,  // arka uç yoksa (GitHub Pages)
 };
 
 const els = {
@@ -16,6 +18,7 @@ const els = {
   totalCount: document.getElementById("total-count"),
   scrapedAt: document.getElementById("scraped-at"),
   refreshBtn: document.getElementById("refresh-btn"),
+  branchSelect: document.getElementById("branch-select"),
   search: document.getElementById("search"),
   ratingFilters: document.getElementById("rating-filters"),
   sort: document.getElementById("sort"),
@@ -178,24 +181,39 @@ function render() {
 
 // Önce yerel sunucudaki /api/reviews denenir; başarısızsa (ör. GitHub Pages gibi
 // statik barındırma) yanındaki reviews.json'dan okunur.
-async function fetchData() {
+// Şube listesi: önce /api/branches, başarısızsa statik ./branches.json.
+async function fetchBranches() {
   try {
-    const r = await fetch("/api/reviews", { cache: "no-store" });
+    const r = await fetch("/api/branches", { cache: "no-store" });
     if (r.ok) {
       const j = await r.json();
-      if (j && Array.isArray(j.reviews)) return { data: j, staticMode: false };
+      if (Array.isArray(j) && j.length) return { branches: j, staticMode: false };
     }
   } catch {}
-  const r2 = await fetch("./reviews.json", { cache: "no-store" });
-  const j2 = await r2.json();
-  return { data: j2, staticMode: true };
+  try {
+    const r2 = await fetch("./branches.json", { cache: "no-store" });
+    const j2 = await r2.json();
+    if (Array.isArray(j2) && j2.length) return { branches: j2, staticMode: true };
+  } catch {}
+  return { branches: [], staticMode: true };
+}
+
+// Bir şubenin yorumları: önce /api/reviews?branch=, başarısızsa ./reviews-<slug>.json.
+async function fetchBranchData(slug) {
+  try {
+    const r = await fetch(`/api/reviews?branch=${encodeURIComponent(slug)}`, { cache: "no-store" });
+    if (r.ok) {
+      const j = await r.json();
+      if (j && Array.isArray(j.reviews)) return j;
+    }
+  } catch {}
+  const r2 = await fetch(`./reviews-${slug}.json`, { cache: "no-store" });
+  return await r2.json();
 }
 
 async function loadReviews() {
-  const { data, staticMode } = await fetchData();
+  const data = await fetchBranchData(state.branch);
   state.all = Array.isArray(data.reviews) ? data.reviews : [];
-  // Statik barındırmada arka uç yok -> "Yenile" butonunu gizle.
-  if (staticMode && els.refreshBtn) els.refreshBtn.style.display = "none";
   renderSummary(data);
   render();
 }
@@ -206,7 +224,7 @@ async function refresh() {
   btn.classList.add("is-loading");
   btn.querySelector(".btn-label").textContent = "Çekiliyor";
   try {
-    const res = await fetch("/api/scrape", { method: "POST" });
+    const res = await fetch(`/api/scrape?branch=${encodeURIComponent(state.branch)}`, { method: "POST" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "Hata");
     state.all = Array.isArray(data.reviews) ? data.reviews : [];
@@ -219,6 +237,39 @@ async function refresh() {
     btn.classList.remove("is-loading");
     btn.querySelector(".btn-label").textContent = "Yenile";
   }
+}
+
+// Şube seçiciyi doldur ve ilk şubeyi yükle.
+async function init() {
+  const { branches, staticMode } = await fetchBranches();
+  state.staticMode = staticMode;
+  // Statik barındırmada arka uç yok -> "Yenile" gizli.
+  if (staticMode && els.refreshBtn) els.refreshBtn.style.display = "none";
+
+  if (!branches.length) {
+    els.resultCount.textContent = "Şube bulunamadı.";
+    return;
+  }
+
+  els.branchSelect.innerHTML = branches
+    .map((b) => `<option value="${b.slug}">${b.label}</option>`)
+    .join("");
+  // Tek şube varsa seçiciyi gizle.
+  els.branchSelect.parentElement.style.display = branches.length > 1 ? "" : "none";
+
+  state.branch = branches[0].slug;
+  els.branchSelect.value = state.branch;
+
+  els.branchSelect.addEventListener("change", (e) => {
+    state.branch = e.target.value;
+    // filtreleri sıfırlamadan yeni şubeyi yükle
+    loadReviews().catch((err) => {
+      console.error(err);
+      els.resultCount.textContent = "Yorumlar yüklenemedi.";
+    });
+  });
+
+  await loadReviews();
 }
 
 // ---------- Olaylar ----------
@@ -240,7 +291,7 @@ els.ratingFilters.addEventListener("click", (e) => {
 });
 els.refreshBtn.addEventListener("click", refresh);
 
-loadReviews().catch((err) => {
+init().catch((err) => {
   console.error(err);
   els.resultCount.textContent = "Yorumlar yüklenemedi.";
 });
