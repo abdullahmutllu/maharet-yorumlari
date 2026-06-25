@@ -1,0 +1,17 @@
+{
+  "name": "restoran-yorum",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Maharet Mantı & Kayseri Yağlaması — Google Maps yorumlarını çekip görüntüleyen basit web uygulaması",
+  "type": "module",
+  "scripts": {
+    "scrape": "node scrape.js",
+    "start": "node server.js",
+    "build": "node build-static.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "google-maps-review-scraper": "^1.0.0",
+    "playwright": "^1.61.1"
+  }
+}

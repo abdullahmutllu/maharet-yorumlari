@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maharet Mantı — Google Yorumları</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">Google Maps Yorumları</p>
+        <h1 id="business-name">Maharet Mantı &amp; Kayseri Yağlaması</h1>
+
+        <div class="summary" id="summary">
+          <div class="summary-score">
+            <span id="avg-rating">–</span>
+            <div class="summary-score-meta">
+              <div class="stars" id="avg-stars" aria-hidden="true"></div>
+              <span class="muted" id="total-count">yükleniyor…</span>
+            </div>
+          </div>
+          <div class="summary-meta">
+            <span class="muted" id="scraped-at"></span>
+            <button id="refresh-btn" class="btn" type="button">
+              <span class="btn-label">Yenile</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="controls" id="controls">
+        <input
+          type="search"
+          id="search"
+          class="search"
+          placeholder="Yorumlarda ara (metin veya kişi adı)…"
+          autocomplete="off"
+        />
+
+        <div class="filters" id="rating-filters" role="group" aria-label="Puana göre filtrele">
+          <button class="chip is-active" data-rating="all" type="button">Tümü</button>
+          <button class="chip" data-rating="5" type="button">5 ★</button>
+          <button class="chip" data-rating="4" type="button">4 ★</button>
+          <button class="chip" data-rating="3" type="button">3 ★</button>
+          <button class="chip" data-rating="2" type="button">2 ★</button>
+          <button class="chip" data-rating="1" type="button">1 ★</button>
+        </div>
+
+        <label class="sort">
+          <span class="muted">Sırala:</span>
+          <select id="sort">
+            <option value="newest">En yeni</option>
+            <option value="oldest">En eski</option>
+            <option value="highest">En yüksek puan</option>
+            <option value="lowest">En düşük puan</option>
+          </select>
+        </label>
+      </section>
+
+      <p class="result-count muted" id="result-count"></p>
+
+      <section id="reviews" class="reviews" aria-live="polite"></section>
+
+      <div id="empty" class="empty hidden">
+        <p>Henüz yorum yok.</p>
+        <p class="muted">
+          Terminalde <code>npm run scrape</code> çalıştır ya da yukarıdaki
+          <strong>Yenile</strong> butonuna bas.
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p class="muted">
+        Veriler Google Maps'ten çekilmiştir. Yalnızca görüntüleme amaçlıdır.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.DS_Store
+
+# Scraper'ın ürettiği yerel veri (yayınlanan kopya docs/reviews.json'dadır)
+data/
+
+# Geçici / hata ayıklama
+.playwright-mcp/
+scratchpad/
