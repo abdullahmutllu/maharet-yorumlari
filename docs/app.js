@@ -19,6 +19,11 @@ const els = {
   scrapedAt: document.getElementById("scraped-at"),
   refreshBtn: document.getElementById("refresh-btn"),
   branchSelect: document.getElementById("branch-select"),
+  addForm: document.getElementById("add-branch"),
+  addUrl: document.getElementById("add-url"),
+  addLabel: document.getElementById("add-label"),
+  addBtn: document.getElementById("add-btn"),
+  addStatus: document.getElementById("add-status"),
   search: document.getElementById("search"),
   ratingFilters: document.getElementById("rating-filters"),
   sort: document.getElementById("sort"),
@@ -239,30 +244,73 @@ async function refresh() {
   }
 }
 
+function populateBranches(branches, selectSlug) {
+  els.branchSelect.innerHTML = branches
+    .map((b) => `<option value="${b.slug}">${b.label}</option>`)
+    .join("");
+  // Birden çok şube varsa veya şube eklenebiliyorsa (canlı arka uç) seçiciyi göster.
+  els.branchSelect.parentElement.style.display =
+    branches.length > 1 || !state.staticMode ? "" : "none";
+  if (selectSlug) els.branchSelect.value = selectSlug;
+}
+
+// "Link yapıştır → topla": yeni şube ekle, çek, seçili yap.
+async function addBranch(e) {
+  e.preventDefault();
+  const url = els.addUrl.value.trim();
+  if (!url) return;
+  const label = els.addLabel.value.trim();
+  els.addBtn.disabled = true;
+  els.addBtn.classList.add("is-loading");
+  els.addBtn.querySelector(".btn-label").textContent = "Toplanıyor";
+  els.addStatus.textContent = "Yorumlar toplanıyor… (birkaç dakika sürebilir)";
+  try {
+    const res = await fetch("/api/branches", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, label }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || data.error || "Hata");
+    els.addStatus.textContent = `Eklendi: ${data.branch.label} — ${data.count} yorum (ort. ${data.averageRating})`;
+    els.addUrl.value = "";
+    els.addLabel.value = "";
+    const { branches } = await fetchBranches();
+    state.branch = data.branch.slug;
+    populateBranches(branches, state.branch);
+    await loadReviews();
+  } catch (err) {
+    els.addStatus.textContent = "Hata: " + err.message;
+  } finally {
+    els.addBtn.disabled = false;
+    els.addBtn.classList.remove("is-loading");
+    els.addBtn.querySelector(".btn-label").textContent = "Topla";
+  }
+}
+
 // Şube seçiciyi doldur ve ilk şubeyi yükle.
 async function init() {
   const { branches, staticMode } = await fetchBranches();
   state.staticMode = staticMode;
-  // Statik barındırmada arka uç yok -> "Yenile" gizli.
-  if (staticMode && els.refreshBtn) els.refreshBtn.style.display = "none";
+
+  // Statik barındırmada arka uç yok -> "Yenile" ve "şube ekle" gizli.
+  if (staticMode) {
+    if (els.refreshBtn) els.refreshBtn.style.display = "none";
+    if (els.addForm) els.addForm.style.display = "none";
+  } else if (els.addForm) {
+    els.addForm.addEventListener("submit", addBranch);
+  }
 
   if (!branches.length) {
-    els.resultCount.textContent = "Şube bulunamadı.";
+    els.resultCount.textContent = "Henüz şube yok. Üstten bir Google Haritalar linki ekleyin.";
     return;
   }
 
-  els.branchSelect.innerHTML = branches
-    .map((b) => `<option value="${b.slug}">${b.label}</option>`)
-    .join("");
-  // Tek şube varsa seçiciyi gizle.
-  els.branchSelect.parentElement.style.display = branches.length > 1 ? "" : "none";
-
   state.branch = branches[0].slug;
-  els.branchSelect.value = state.branch;
+  populateBranches(branches, state.branch);
 
   els.branchSelect.addEventListener("change", (e) => {
     state.branch = e.target.value;
-    // filtreleri sıfırlamadan yeni şubeyi yükle
     loadReviews().catch((err) => {
       console.error(err);
       els.resultCount.textContent = "Yorumlar yüklenemedi.";

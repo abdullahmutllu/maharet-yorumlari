@@ -10,10 +10,10 @@
 // Kaynak yöntem referansları: gosom/google-maps-scraper, georgekhananaev/google-reviews-scraper-pro
 
 import { chromium } from "playwright";
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
-import { BRANCHES, branchBySlug } from "./config.js";
+import { getAllBranches } from "./branches.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, "data");
@@ -227,7 +227,14 @@ async function scrollToEnd(page, { total, label, maxScrolls = 800 }) {
   return size;
 }
 
-export async function runScrape(branch, { headless = process.env.HEADLESS !== "0", maxScrolls = 600 } = {}) {
+export async function runScrape(
+  branch,
+  {
+    headless = process.env.HEADLESS !== "0",
+    maxScrolls = 600,
+    maxRounds = Number(process.env.MAX_ROUNDS) || 12,
+  } = {}
+) {
   const outFile = join(DATA_DIR, `reviews-${branch.slug}.json`);
   const searchUrl = buildSearchUrl(branch.placeUrl, branch.name);
   console.log(`\n######## Şube: ${branch.label} (${branch.name}) ########`);
@@ -280,16 +287,23 @@ export async function runScrape(branch, { headless = process.env.HEADLESS !== "0
     await dismissConsent(warm);
     await warm.close().catch(() => {});
 
-    // 2) Sıralama geçişlerini PARALEL çalıştır — her biri taze sayfada, aynı anda kaydırır.
-    //    (Ardışık 4 geçiş yerine ~tek geçiş süresinde biter.) Tespiti azaltmak için
-    //    sayfa açılışları kademeli başlatılır.
+    // Önceki kayıttan başla (birikimli; tekrar çalıştırınca kapsam artar).
+    try {
+      const prev = JSON.parse(await readFile(outFile, "utf8"));
+      if (Array.isArray(prev.reviews)) {
+        for (const r of prev.reviews) merged.set(keyOf(r), r);
+        console.log(`Önceki kayıttan başlangıç: ${merged.size}`);
+      }
+    } catch {}
+
+    // Tek bir sıralama geçişi: taze sayfa, sona kadar kaydır, yorumları döndür.
     let total = null;
     const runPass = async (s, idx) => {
-      await sleep(idx * 2000); // kademeli başlat
+      await sleep(idx * 1500); // kademeli başlat (aynı anda 4 navigasyonu önle)
       const page = await context.newPage();
       try {
         await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
-        await sleep(4000);
+        await sleep(3500);
         await dismissConsent(page);
 
         const opened = await clickReviewsTab(page);
@@ -298,16 +312,13 @@ export async function runScrape(branch, { headless = process.env.HEADLESS !== "0
         await page.evaluate(pageSetup);
         if (total == null) {
           total = await page.evaluate(readTotalCount).catch(() => null);
-          if (total) console.log(`Sayfadaki toplam yorum sayısı: ~${total}`);
+          if (total) console.log(`Google'daki toplam yorum: ~${total}`);
         }
 
         const applied = await applySort(page, s.name);
-        console.log(`=== Sıralama (paralel): ${s.key}${applied ? "" : " (uygulanamadı; varsayılan sıra)"} ===`);
-        await sleep(1000);
-
+        await sleep(900);
         await scrollToEnd(page, { total, label: s.key, maxScrolls });
         const arr = await page.evaluate(() => window.__dump());
-        console.log(`"${s.key}" bitti — bu geçiş: ${arr.length}`);
         return arr;
       } catch (e) {
         console.warn(`[${s.key}] hata: ${e.message}`);
@@ -317,9 +328,30 @@ export async function runScrape(branch, { headless = process.env.HEADLESS !== "0
       }
     };
 
-    const passArrays = await Promise.all(sorts.map((s, i) => runPass(s, i)));
-    for (const arr of passArrays) for (const r of arr) merged.set(keyOf(r), r);
-    console.log(`Birleşik toplam: ${merged.size}`);
+    // 2) TUR DÖNGÜSÜ: Google oturumsuz her seferinde biraz farklı alt küme sunduğundan,
+    //    hedefe (Google toplamı) ulaşana ya da doygunluğa (yeni yorum gelmemesi) kadar
+    //    4 sıralamayı PARALEL tekrar tekrar çalıştırıp birleştiriyoruz.
+    const MIN_NEW = 4;   // bir turda bundan az yeni gelirse "kuru" tur say
+    const DRY_MAX = 2;   // üst üste bu kadar kuru tur olursa dur
+    let dryStreak = 0;
+    for (let round = 1; round <= maxRounds; round++) {
+      const before = merged.size;
+      const passArrays = await Promise.all(sorts.map((s, i) => runPass(s, i)));
+      for (const arr of passArrays) for (const r of arr) merged.set(keyOf(r), r);
+      const added = merged.size - before;
+      const pct = total ? ` (%${Math.round((merged.size / total) * 100)})` : "";
+      console.log(`— Tur ${round}: +${added} → toplam ${merged.size}${total ? ` / ${total}` : ""}${pct}`);
+
+      if (total && merged.size >= total) { console.log("✓ Hedefe ulaşıldı."); break; }
+      if (added < MIN_NEW) {
+        if (++dryStreak >= DRY_MAX) {
+          console.log("Doygunluk: yeni yorum gelmiyor, durduruldu (Google oturumsuz tavanı).");
+          break;
+        }
+      } else {
+        dryStreak = 0;
+      }
+    }
 
     reviews = [...merged.values()];
   } finally {
@@ -361,9 +393,10 @@ export async function runScrape(branch, { headless = process.env.HEADLESS !== "0
 
 // Tüm şubeleri (veya CLI ile verilen tek şubeyi) sırayla çeker.
 export async function runAll(slug) {
-  const targets = slug ? [branchBySlug(slug)].filter(Boolean) : BRANCHES;
+  const all = await getAllBranches();
+  const targets = slug ? all.filter((b) => b.slug === slug) : all;
   if (!targets.length) {
-    throw new Error(`Şube bulunamadı: "${slug}". Geçerli: ${BRANCHES.map((b) => b.slug).join(", ")}`);
+    throw new Error(`Şube bulunamadı: "${slug}". Geçerli: ${all.map((b) => b.slug).join(", ")}`);
   }
   const results = [];
   for (const branch of targets) {

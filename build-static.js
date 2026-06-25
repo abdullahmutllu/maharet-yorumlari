@@ -7,7 +7,7 @@
 import { mkdir, copyFile, writeFile, readFile, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { BRANCHES } from "./config.js";
+import { getAllBranches } from "./branches.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DOCS = join(__dirname, "docs");
@@ -23,7 +23,8 @@ for (const f of ["index.html", "app.js", "styles.css"]) {
 // eski tek-şube dosyası varsa temizle
 await rm(join(DOCS, "reviews.json"), { force: true });
 
-// her şubenin verisini kopyala
+// her şubenin verisini kopyala (sabit + dinamik)
+const BRANCHES = await getAllBranches();
 const manifest = [];
 for (const b of BRANCHES) {
   try {

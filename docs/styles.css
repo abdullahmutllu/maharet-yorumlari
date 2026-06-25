@@ -257,6 +257,50 @@ h1 {
   font-weight: 600;
 }
 
+/* ---------- Şube ekle (link → topla) ---------- */
+.add-branch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.add-url {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.add-label {
+  flex: 0 1 170px;
+  min-width: 0;
+}
+
+.add-url,
+.add-label {
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.add-url:focus,
+.add-label:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.add-status {
+  flex-basis: 100%;
+  font-size: 0.82rem;
+  min-height: 1em;
+}
+
 .result-count {
   margin: 16px 2px 8px;
   font-size: 0.85rem;

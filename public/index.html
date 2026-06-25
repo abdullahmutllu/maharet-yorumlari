@@ -37,6 +37,21 @@
             </button>
           </div>
         </div>
+
+        <form id="add-branch" class="add-branch" autocomplete="off">
+          <input
+            type="url"
+            id="add-url"
+            class="add-url"
+            placeholder="Google Haritalar işletme linki yapıştır → yorumları topla"
+            required
+          />
+          <input type="text" id="add-label" class="add-label" placeholder="Etiket (opsiyonel)" />
+          <button type="submit" class="btn" id="add-btn">
+            <span class="btn-label">Topla</span>
+          </button>
+          <span class="muted add-status" id="add-status"></span>
+        </form>
       </div>
     </header>
 
