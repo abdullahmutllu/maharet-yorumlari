@@ -38,6 +38,8 @@
           </div>
         </div>
 
+        <div class="rating-dist" id="rating-dist" aria-label="Puan dağılımı"></div>
+
         <form id="add-branch" class="add-branch" autocomplete="off">
           <input
             type="url"
@@ -72,6 +74,13 @@
           <button class="chip" data-rating="3" type="button">3 ★</button>
           <button class="chip" data-rating="2" type="button">2 ★</button>
           <button class="chip" data-rating="1" type="button">1 ★</button>
+        </div>
+
+        <div class="export" id="export">
+          <span class="muted">İndir:</span>
+          <button type="button" class="chip" data-fmt="csv">CSV</button>
+          <button type="button" class="chip" data-fmt="xlsx">Excel</button>
+          <button type="button" class="chip" data-fmt="json">JSON</button>
         </div>
 
         <label class="sort">

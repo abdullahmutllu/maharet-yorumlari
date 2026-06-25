@@ -9,6 +9,9 @@ const state = {
   sort: "newest",
   branch: null,       // seçili şube slug'ı
   staticMode: false,  // arka uç yoksa (GitHub Pages)
+  business: "",
+  branchLabel: "",
+  scrapedAt: null,
 };
 
 const els = {
@@ -30,6 +33,8 @@ const els = {
   resultCount: document.getElementById("result-count"),
   reviews: document.getElementById("reviews"),
   empty: document.getElementById("empty"),
+  ratingDist: document.getElementById("rating-dist"),
+  exportEl: document.getElementById("export"),
 };
 
 // ---------- Yardımcılar ----------
@@ -75,11 +80,51 @@ function formatScrapedAt(iso) {
 
 function renderSummary(data) {
   if (data.business) els.businessName.textContent = data.business;
+  state.business = data.business || "";
+  state.branchLabel = data.branch?.label || "";
+  state.scrapedAt = data.scrapedAt || null;
   const avg = Number(data.averageRating || 0);
   els.avgRating.textContent = avg ? avg.toFixed(1) : "–";
   els.avgStars.innerHTML = starsHtml(avg);
   els.totalCount.textContent = `${data.count || 0} yorum`;
   els.scrapedAt.textContent = data.scrapedAt ? `Son güncelleme: ${formatScrapedAt(data.scrapedAt)}` : "";
+  renderStats();
+}
+
+// Puan dağılımı (5★→1★) + mini istatistikler.
+function renderStats() {
+  const list = state.all;
+  if (!list.length) { els.ratingDist.innerHTML = ""; return; }
+  const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  let rated = 0;
+  for (const r of list) {
+    const v = Math.round(getRating(r));
+    if (v >= 1 && v <= 5) { counts[v]++; rated++; }
+  }
+  const withText = list.filter((r) => getText(r)).length;
+  const withPhoto = list.filter((r) => getImages(r).length).length;
+  const withResp = list.filter((r) => r.response?.text).length;
+
+  const bars = [5, 4, 3, 2, 1]
+    .map((star) => {
+      const c = counts[star];
+      const pct = rated ? Math.round((c / rated) * 100) : 0;
+      return `
+        <div class="dist-row">
+          <span class="dist-star">${star} ★</span>
+          <span class="dist-bar"><span class="dist-fill" style="width:${pct}%"></span></span>
+          <span class="dist-count">${c.toLocaleString("tr-TR")}</span>
+        </div>`;
+    })
+    .join("");
+
+  els.ratingDist.innerHTML = `
+    <div class="dist-bars">${bars}</div>
+    <div class="dist-meta muted">
+      <span>📝 ${withText.toLocaleString("tr-TR")} metinli</span>
+      <span>📷 ${withPhoto.toLocaleString("tr-TR")} fotoğraflı</span>
+      <span>💬 ${withResp.toLocaleString("tr-TR")} işletme yanıtlı</span>
+    </div>`;
 }
 
 function applyFilters() {
@@ -320,7 +365,108 @@ async function init() {
   await loadReviews();
 }
 
+// ---------- Dışa aktarma (CSV / Excel / JSON) ----------
+
+function exportRows(list) {
+  return list.map((r, i) => ({
+    "#": i + 1,
+    Yazar: getAuthorName(r),
+    Puan: getRating(r),
+    Tarih: r.relativeDate || "",
+    Yorum: getText(r),
+    "İşletme Yanıtı": r.response?.text || "",
+    "Yanıt Tarihi": r.response?.date || "",
+    Fotoğraf: getImages(r).length,
+    "Yorum ID": r.review_id || "",
+  }));
+}
+
+function downloadBlob(content, filename, type) {
+  const blob = content instanceof Blob ? content : new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function exportFilename(ext) {
+  const d = new Date().toISOString().slice(0, 10);
+  return `maharet-${state.branch || "yorumlar"}-${d}.${ext}`;
+}
+
+function toCSV(rows) {
+  if (!rows.length) return "";
+  const headers = Object.keys(rows[0]);
+  const esc = (v) => {
+    const s = String(v ?? "");
+    return /[",\r\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const lines = [headers.join(",")];
+  for (const row of rows) lines.push(headers.map((h) => esc(row[h])).join(","));
+  return "﻿" + lines.join("\r\n"); // BOM -> Excel Türkçe karakterleri doğru açar
+}
+
+async function ensureXLSX() {
+  if (window.XLSX) return window.XLSX;
+  await new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload = resolve;
+    s.onerror = () => reject(new Error("Excel kütüphanesi yüklenemedi"));
+    document.head.appendChild(s);
+  });
+  return window.XLSX;
+}
+
+async function exportData(fmt) {
+  const list = applyFilters(); // ekrandaki (filtreli/sıralı) yorumlar
+  if (!list.length) { alert("Dışa aktarılacak yorum yok."); return; }
+
+  if (fmt === "json") {
+    const payload = {
+      business: state.business,
+      branch: state.branchLabel,
+      scrapedAt: state.scrapedAt,
+      count: list.length,
+      reviews: list,
+    };
+    downloadBlob(JSON.stringify(payload, null, 2), exportFilename("json"), "application/json");
+    return;
+  }
+
+  const rows = exportRows(list);
+  if (fmt === "csv") {
+    downloadBlob(toCSV(rows), exportFilename("csv"), "text/csv;charset=utf-8");
+    return;
+  }
+
+  if (fmt === "xlsx") {
+    try {
+      const XLSX = await ensureXLSX();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws["!cols"] = [
+        { wch: 5 }, { wch: 22 }, { wch: 6 }, { wch: 14 }, { wch: 60 },
+        { wch: 50 }, { wch: 14 }, { wch: 9 }, { wch: 26 },
+      ];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Yorumlar");
+      XLSX.writeFile(wb, exportFilename("xlsx"));
+    } catch (e) {
+      alert("Excel oluşturulamadı: " + e.message + "\nCSV indirip Excel'de açabilirsiniz.");
+    }
+  }
+}
+
 // ---------- Olaylar ----------
+
+els.exportEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-fmt]");
+  if (btn) exportData(btn.dataset.fmt);
+});
 
 els.search.addEventListener("input", (e) => {
   state.search = e.target.value;

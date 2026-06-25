@@ -301,6 +301,80 @@ h1 {
   min-height: 1em;
 }
 
+/* ---------- Puan dağılımı ---------- */
+.rating-dist {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 32px;
+  align-items: center;
+}
+
+.rating-dist:empty {
+  display: none;
+}
+
+.dist-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 300px;
+  max-width: 440px;
+}
+
+.dist-row {
+  display: grid;
+  grid-template-columns: 34px 1fr 52px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.dist-star {
+  color: var(--ink-soft);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dist-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dist-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #f0b53c, var(--star));
+  border-radius: 999px;
+}
+
+.dist-count {
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dist-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Export ---------- */
+.export {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.export .chip[data-fmt]:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .result-count {
   margin: 16px 2px 8px;
   font-size: 0.85rem;

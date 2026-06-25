@@ -1,7 +1,11 @@
 {
+  "branch": {
+    "slug": "izmir",
+    "label": "İzmir / Bayraklı"
+  },
   "business": "Maharet Mantı & Kayseri Yağlaması",
-  "sourceUrl": "https://www.google.com/maps/place/Maharet+Mant%C4%B1+%26+Kayseri+Ya%C4%9Flamas%C4%B1/@38.4516459,27.1808987,17z/data=!3m1!4b1!4m6!3m5!1s0x14bbd79aaaaaaac7:0x57790eab3d86a168!8m2!3d38.4516459!4d27.1808987!16s%2Fg%2F11f1k6v4ny!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D",
-  "scrapedAt": "2026-06-25T20:34:03.003Z",
+  "sourceUrl": "https://www.google.com/maps/place/Maharet+Mant%C4%B1+%26+Kayseri+Ya%C4%9Flamas%C4%B1/@38.4516459,27.1808987,17z/data=!3m1!4b1!4m6!3m5!1s0x14bbd79aaaaaaac7:0x57790eab3d86a168!8m2!3d38.4516459!4d27.1808987!16s%2Fg%2F11f1k6v4ny!18m1!1e1?entry=ttu",
+  "scrapedAt": "2026-06-25T21:47:08.553Z",
   "count": 1377,
   "averageRating": 4.13,
   "reviews": [
@@ -25,7 +29,7 @@
       },
       "rating": 1,
       "text": "Bugün gittim yaglama yemeye yemez olaydım bildiğin sogan ve lavaş yedim bilmesem yaglamanın tadını belki derim ama bildiğiniz kıyma değil soğan tadı yazık o kadar paraya\nAyrıyetten kızım sarma istedi tapakta 10 tane geldi görsel olarak çok kötü hizmet yok çalışan iki kişi var birbirinden haberi yok zaten belli kimse yoktu nedeni anlaşıldı tavsiye etmiyorum",
-      "relativeDate": "2 gün önce",
+      "relativeDate": "3 gün önce",
       "response": null,
       "images": null
     },
@@ -5211,7 +5215,7 @@
       },
       "rating": 2,
       "text": "yağlama ve sarma yedik ama yağlama lezzetsiz, sarmanın da neredeyse içinde hiç pirinç yoktu.. servisteki arkadaşlar ilgili, güler yüzlü ama mutfak çalışanlarının yemeği sunmadan önce tadına bakmasını öneririm..",
-      "relativeDate": "11 ay önce",
+      "relativeDate": "bir yıl önce",
       "response": null,
       "images": null
     },
@@ -6844,7 +6848,7 @@
       "relativeDate": "bir yıl önce",
       "response": null,
       "images": [
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn34XvyomeX-cJTJ68oxX0pEwctnYN7LLWRRKqkwgbCXFLpOyRxIhT9zMLwKd_SpYKUlsJ330tt9gTbVruF_55t_nv0BqkSL1QG0AuyN6u6WMOzfTlgJ5oI4oeFUe9o60cbxtE7w9g=w300-h450-p-k-no",
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn2DtajVDkEePrWhH32hs4U0V4DFT4wyA13PkyRmoVbSHgdjO5wx_VXgFmyNUe-akj8CldxyCTbRfEqff_Bv49NY2mlMQ1xgtwX8863E7HKBfW2uBBG7v8V3d7uFSvA0dj4dYmQ15g=w300-h450-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn1cIfbVz7gWiIKrZJv9EYFPaYC7MiQH8xl7OFJDkz5JESzYniCHCdOviPX2lbY0b0T4j-eIa835uRMDN88IEu4T9iLrqcQq29deI9wJqOJwE0amlz-NjKkcVsr52WOADCc9MmYC=w300-h450-p-k-no"
       ]
     },
@@ -8908,7 +8912,7 @@
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn0u7YGsiXh6A_w04wHZOsLT3fbYOG1U29ZzEBwmILLNHZh-Vn6Sp4xspQykAlgnMEKPsTX3GZO3vVit5k2PXlI1nJ6r4JVqFhSLpbCixpM3mI9s0S7JcpeN_wIaID0_XXj0_7mO=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn07YXjrt8R7qNTsZbffROaOZ5S-ksRPAtE2HXK1mey-7hYFNSorbx2ChHlcV4C1DzJkuQCIzTfKXo4fFbK9s219uYEGC_MZj8aQn1tyLJ-nlssyDUtMWnMaTRgtEuUqq_3JsGQf=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn1zjoO4o_CUACFSOYd88gj2fmSIqNTtCwmkeXQCwZ19h4GpVK3gTMRtTmBzuo-Iz6TMapDrdhp9mtW28JRkrAAuUWlnn8eOmgZzb92kaQPkO_4QfufomSjAdMwoUU7GdcO5NIGE=w300-h225-p-k-no",
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn3MH5MtHpC2iKsFEoH8PvMoKW6Zu06198B1eT9jYQWFT4QMYkWjKUIG_3DZQ3mt8vA5WwcS1orR2Zpv4pM3AuG7VkLcfzC9tOpYYEkyp6f86E51qUFq78wpJIDHVoqFmgTDIkZX4w=w300-h225-p-k-no"
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn1J3CbNNSvy7HOqGQAtIp6BUxFYzH3o3QA_HK-0jmJsq3uhF2lT-6qAg2k8fVYALcZ2APFlqsAvURNmCkUK-ewlPMtGDIgXxApkub5pVmbAHTJIrcdK4u0EXXAnun2PtJYbKQuB8w=w300-h225-p-k-no"
       ]
     },
     {
@@ -9231,7 +9235,7 @@
       "relativeDate": "2 yıl önce",
       "response": null,
       "images": [
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn2F9oV_KcfPMw8Ny48s0cRZ_YHtmoIdCXgOOYESXNnSxPImjMtB8cDY_sZKX_PVWphm2v9Hc-2jfsfmkoyr5W4H255hTBMSyTrgKrht1vhuwz8Mr8oiMMFOneS16Nmb1ExWjnFzpA=w600-h450-p-k-no"
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn0cmODFvsYeA9lYBcCO4FdhbR4uNt8Jb7Nbf2tzrLwzTe9x5pdVFN1IeJYgNMZ0B0xydOAyk1IXH_9XUSDDTNKlQFJhHL0-NIh7tHeBRSA9EDDnYwPc24agukTFS_A0aM9nHXKHjg=w600-h450-p-k-no"
       ]
     },
     {
@@ -9377,7 +9381,7 @@
       "relativeDate": "2 yıl önce düzenlendi",
       "response": null,
       "images": [
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn2-y7GoxIZlhFsf74wJqwj76snt8fYGS1CidGRepu9mpstvPAp3bPD2RZrwxG-LK6u0rRZ1Bl4IKJsydcDJrQQ9DkTwebumxKEOrlbyDR-THPhfbT_qVZmkBdvTGKLutVtUgDQG=w300-h225-p-k-no",
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn16sZyleRofvytSajhp7KZhjeQH9jYpnBzIeX9Lr8rb4L_uKEX2n6-F9kcH8xopgDa47VzGEeIkkXzm6YT3xMDIuk_95sKQmSfHiUmm8OySU323fODdKsHm0oAlh5fZyNTVPhM_=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn2fswfGR8sbFdN2TBlnotmyUcTDX9zZyv8XpjH8WkssmhlzHNXQxQhRNhcvGaj6iMzYW4XQCOgyVvxNKKtrrZLiQk2k9xCdulWpe8S_PGL0lrE0nf5ZMGCteAq1JQRUdOL-T4WePg=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn0a2Ma7ANElxMjhgaX6DGVXhqUxH9PKzQkFYCb84uRS3aQFNx68qZv11zxDpAfH1Whs2A0WlwbWlGzS3jbq4_6g9idblkGy4RkP3TgLF_zZz6i_43uhg0bNggugJcE-UAuOwB8=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn0Ft03n_nQSqc8Wo8P1PNFhqtnZYZFVJrnHPSPSrZAMb0lLMv1cgNZRbPPskrGBsA4ULeVUjA8FH3eTU-Okm3U4yKGVp5AjFNtAuz2aQPImuaQllIJyv2Mg7bwqvU2LpQQvnabvpg=w300-h225-p-k-no"
@@ -10489,7 +10493,7 @@
       "response": null,
       "images": [
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn0J5poHwuN2Dks3ra0a6HnsMpnSo0nPNdLWp_ySOp2fWoR3_fzNoMI6xaxp6Ehg7isj6HLqMOjpnTG3LHQ0EqPsMswrm4MdrDf5I7KWAkGQSBSHmf8z5y-kGGIQNZCZSYWbWMpN=w300-h450-p-k-no",
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn0Uq_O9vFFc6JX5TJHguQfyVYlNKoBXegC0aOlKL_luwApelMHH3I1wpy4l7d6Q29U8ocK67MenA4RyKWSKZgPdlIn9uPW_z-MK4ZsWlQOKn2e3fM6EFtoGAcEt2swxEZhhHooVAw=w300-h225-p-k-no",
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn3gfJWPrpi_BYohImswFyRyGtq4jYykYvdF8jCIkUpYFOwTAZx4giqhqBE7ShZxT4Q8hEcqshif1KNjaygemngzjv6MmaDHG4xDn_5jF-aSom47ejVoPHrk7H1S_TkVFEj7XgL6Mw=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn1EjkB_twjh8MywqOIf9Tx_Z_sYZLygXf_YvA5EwtckR6o3x1RI1DP3anbgbgmVtWj0NlnSObqBC3Mr0FSAkODpNY5hyb1pf54oc2BW5s71Em7vni6_6XPNK5tGWjRhanfOiSek2A=w300-h225-p-k-no"
       ]
     },
@@ -10732,7 +10736,7 @@
       "response": null,
       "images": [
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn19jtZXzH7wS6TDHe65sUd6HPEdz_jC6QiaWbDn5QRncmFeUXxbKoHdCoo3kyPsFnFX3OXzan-fcl1kMKByAK1_imlDE-uZKOZwflMT_ATZQHGtuIhnuIHeq6O1vOYhfwqtvVTi=w300-h450-p-k-no",
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn3WZjediSxpnnFC1I_yOUC6FO8l0hMk0HrUP8kJrQvmx2mK26k1WfJBgfYkJfmWK1sazF74MtQUbOfjB1tER4WzqtG6zUR9zxPQiZco0yuek8B9VFkd6jLgoes0gdPpNUEYMvBl=w300-h225-p-k-no",
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn3olDoWslsJUWu35SpSMY2QIIeZZ_F5L-tkMx8RA6JeW5qdoa75FpOwTATywJE8ORfk1UKO_EVotepfP5iX858lSoB6vl91y8ss4u4-vjolXLlEZ4A1mRE8Vqsj1wADTv1T4Qke=w300-h225-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn1PKzgrpO49Iq_LfsqA6XPOq-8jIb8VAJICPLuV5bgr60_kCy_eAR1VyEr-THWGKOUM7xKkgoD3z6esLt691W_gS7_xBDmiIZJAfIsKvbI684UzLsy5D_o1z840VSgmubRV2ekmIA=w300-h225-p-k-no"
       ]
     },
@@ -11136,7 +11140,7 @@
       "relativeDate": "3 yıl önce",
       "response": null,
       "images": [
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn16bHjbEOyvLX7_nH-5Or5vN1sbSnj9oK1C_flPxpbegzAwW9LAaouBv8q9m9u5Sv0yWHk3A4eeHmzMtLsO-Zu4TsH9jTf5IvsDap0vuyuYzGAlEzhsJJD61zDLo3eREN2Sbh8c=w600-h450-p-k-no"
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn1NhgA6DGsBMkNKkV_KDBKEQ2ebF8vq_1NJOgpDkanSDv2UpXm0YnKll-pnsb7kIdNEimqZXIlRkDsmDywuzCF9ShVC4vBWopwNp1ijzZncYXTEart7i2YORVcpT67oNwPI6WAP=w600-h450-p-k-no"
       ]
     },
     {
@@ -13119,7 +13123,7 @@
       "relativeDate": "3 yıl önce",
       "response": null,
       "images": [
-        "https://lh3.googleusercontent.com/grass-cs/ANxoTn2fj5wFPn6tAhGVnR7T7xxhzs_JK0EebgXFwei8w4oRSN1dNHOqkVH7wRzyF5nhwzL1SPi4go3vAMNbquEXngKmckAzlVJaC8Xct27ue5JFVedIPN9o4Ju_OEMfIN2iRooVoFRLnA=w300-h450-p-k-no",
+        "https://lh3.googleusercontent.com/grass-cs/ANxoTn2_RUr7STJSOouisL1hylYovmlh0hlyBchRyYtoj4pvjaOfde1qebdDXEuvZXcK-33LtihVa5vp5Ihv43eMDjVmSj8S05xTXn4xcoyFuUklRte4iCpuUMTBvjMymJ462gWGgIoxFg=w300-h450-p-k-no",
         "https://lh3.googleusercontent.com/grass-cs/ANxoTn3rdghyDdsZg3w87UnI_hK6bc87Ka1SD82VjLKSeqdWq7a7UuA3Yt2Vt-Rbm4sVbJaRNLJZLqODRi3ib5VZLL0QZ06VEycWsr_cHH6nVw8J22k7bY8J_YYR14OGJjlPxYaSe2Ba=w300-h450-p-k-no"
       ]
     },
@@ -17216,9 +17220,5 @@
       "response": null,
       "images": null
     }
-  ],
-  "branch": {
-    "slug": "izmir",
-    "label": "İzmir / Bayraklı"
-  }
+  ]
 }
