@@ -161,6 +161,7 @@ async function init() {
   els.sel.innerHTML =
     `<option value="__all__">Tüm restoranlar (${trn(total)})</option>` +
     state.manifest.map((m) => `<option value="${m.slug}">${esc(m.label)} (${trn(m.count)})</option>`).join("");
+  els.sel.value = state.manifest[0].slug;
   els.sel.addEventListener("change", (e) => selectRest(e.target.value));
   els.search.addEventListener("input", (e) => { state.search = e.target.value; render(); });
   els.sort.addEventListener("change", (e) => { state.sort = e.target.value; render(); });
