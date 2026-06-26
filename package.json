@@ -8,7 +8,8 @@
     "scrape": "node scrape.js",
     "discover": "node discover.js",
     "start": "node server.js",
-    "build": "node build-static.js"
+    "build": "node build-static.js",
+    "batch": "node batch.js"
   },
   "dependencies": {
     "express": "^4.21.2",

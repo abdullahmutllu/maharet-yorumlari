@@ -109,6 +109,13 @@ function pageSetup() {
     const img = c.querySelector("img");
     if (img && /lh3|googleusercontent/.test(img.src)) photo = img.src;
 
+    // Yazar istatistiği: ".RfnDt" -> "Yerel Rehber · 189 yorum · 259 fotoğraf"
+    const sub = c.querySelector(".RfnDt")?.textContent || "";
+    const subInt = (re) => { const m = sub.match(re); return m ? parseInt(m[1].replace(/[.\s]/g, ""), 10) : null; };
+    const authorReviewCount = subInt(/(\d[\d.\s]*)\s*yorum/i);
+    const authorPhotoCount = subInt(/(\d[\d.\s]*)\s*foto/i);
+    const localGuide = /yerel rehber|local guide/i.test(sub);
+
     let rating = null;
     const rEl = c.querySelector('span[role="img"][aria-label]') || c.querySelector(".kvMYJc[aria-label]");
     if (rEl) rating = num(rEl.getAttribute("aria-label"));
@@ -133,22 +140,23 @@ function pageSetup() {
       };
     }
 
-    const images = [...c.querySelectorAll("button.Tya61d, button[data-photo-index]")]
-      .map((b) => {
-        const s = b.getAttribute("style") || "";
-        const m = s.match(/url\(["']?(.*?)["']?\)/);
-        return m ? m[1] : null;
-      })
-      .filter(Boolean);
+    // Review fotoğrafları çekilmiyor (istek üzerine). Yalnızca foto SAYISI not edilir.
+    const reviewPhotoCount = c.querySelectorAll("button.Tya61d, button[data-photo-index]").length || 0;
 
     return {
       review_id: id,
-      author: { name: author, photo },
+      author: {
+        name: author,
+        photo, // küçük profil/avatar URL'i (arayüzde gösterim için)
+        reviewCount: authorReviewCount, // yazarın toplam yorum sayısı
+        photoCount: authorPhotoCount, // yazarın toplam fotoğraf sayısı
+        localGuide,
+      },
       rating,
       text,
       relativeDate: date,
       response,
-      images: images.length ? images : null,
+      reviewPhotoCount, // bu yorumdaki foto sayısı (foto URL'leri çekilmiyor)
     };
   }
 
@@ -278,9 +286,10 @@ export async function runScrape(
     maxScrolls = 600,
     maxRounds = Number(process.env.MAX_ROUNDS) || 12,
     login = process.env.LOGIN === "1" || process.env.USE_PROFILE === "1",
+    outFile: outFileOpt = null,
   } = {}
 ) {
-  const outFile = join(DATA_DIR, `reviews-${branch.slug}.json`);
+  const outFile = outFileOpt || join(DATA_DIR, `reviews-${branch.slug}.json`);
   const searchUrl = buildSearchUrl(branch.placeUrl, branch.name);
   console.log(`\n######## Şube: ${branch.label} (${branch.name}) ########`);
   console.log(`Arama URL: ${searchUrl}`);
