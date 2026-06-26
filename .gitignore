@@ -5,8 +5,9 @@ node_modules/
 # Scraper'ın ürettiği yerel veri (yayınlanan kopya docs/ içindedir)
 data/
 
-# Giriş modu Chrome profili (Google oturumu — asla commit'lenmemeli)
+# Giriş modu Chrome profilleri (Google oturumu — asla commit'lenmemeli)
 .gprofile/
+.gchrome/
 
 # Geçici / hata ayıklama
 .playwright-mcp/

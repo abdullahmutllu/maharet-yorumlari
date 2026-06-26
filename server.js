@@ -1,5 +1,5 @@
 // Basit Express sunucusu: statik frontend + çok şubeli yorum API'leri +
-// dinamik şube ekleme + Google giriş (tam kapsam için).
+// dinamik şube ekleme + Google giriş (gerçek Chrome + CDP ile tam kapsam).
 
 import express from "express";
 import { readFile } from "node:fs/promises";
@@ -7,15 +7,16 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { PORT } from "./config.js";
 import { getAllBranches, getBranch, addCustomBranch } from "./branches.js";
-import { runScrape, runLogin, isLoggedIn, clearLogin } from "./scrape.js";
+import { runScrape } from "./scrape.js";
+import { launchLoginChrome, cdpAlive } from "./login.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// Aynı anda tek tarayıcı işi (giriş ve çekim aynı profili kullanır, çakışmasın).
+// Aynı anda tek tarayıcı çekim işi.
 let busy = false;
 const withLock = async (res, fn) => {
-  if (busy) { res.status(409).json({ error: "Şu an başka bir işlem sürüyor, lütfen bekleyin." }); return; }
+  if (busy) { res.status(409).json({ error: "Şu an başka bir çekim sürüyor, lütfen bekleyin." }); return; }
   busy = true;
   try { await fn(); } finally { busy = false; }
 };
@@ -28,25 +29,19 @@ app.get("/api/branches", async (_req, res) => {
   res.json(all.map((b) => ({ slug: b.slug, label: b.label })));
 });
 
+// Giriş durumu: giriş için açılan gerçek Chrome (CDP/9222) çalışıyor mu?
 app.get("/api/login-status", async (_req, res) => {
-  res.json({ loggedIn: await isLoggedIn() });
+  res.json({ chrome: await cdpAlive() });
 });
 
-// Google ile giriş: görünür Chrome açar, giriş yapılana kadar bekler.
-app.post("/api/login", async (req, res) => {
-  await withLock(res, async () => {
-    try {
-      const r = await runLogin();
-      res.json(r);
-    } catch (err) {
-      res.status(500).json({ error: "Giriş başarısız", detail: String(err?.message || err) });
-    }
-  });
-});
-
-app.post("/api/logout", async (_req, res) => {
-  try { res.json(await clearLogin()); }
-  catch (err) { res.status(500).json({ error: "Çıkış başarısız", detail: String(err?.message || err) }); }
+// "Google ile giriş": otomasyon bayrağı olmayan GERÇEK bir Chrome açar (Google engellemez).
+app.post("/api/login", async (_req, res) => {
+  try {
+    const r = await launchLoginChrome();
+    res.json(r);
+  } catch (err) {
+    res.status(500).json({ error: "Chrome açılamadı", detail: String(err?.message || err) });
+  }
 });
 
 app.get("/api/reviews", async (req, res) => {
@@ -70,13 +65,13 @@ app.get("/api/reviews", async (req, res) => {
   }
 });
 
-// Bir şubeyi yeniden çek ("Yenile") — giriş yapılmışsa oturumlu (tam kapsam).
+// Bir şubeyi yeniden çek ("Yenile") — giriş Chrome'u açıksa CDP ile oturumlu (tam kapsam).
 app.post("/api/scrape", async (req, res) => {
   const branch = await getBranch(req.query.branch);
   if (!branch) return res.status(404).json({ error: "Şube bulunamadı", slug: req.query.branch });
   await withLock(res, async () => {
     try {
-      const payload = await runScrape(branch, { login: await isLoggedIn() });
+      const payload = await runScrape(branch);
       res.json(payload);
     } catch (err) {
       res.status(500).json({ error: "Yorumlar çekilemedi", detail: String(err?.message || err) });
@@ -84,14 +79,14 @@ app.post("/api/scrape", async (req, res) => {
   });
 });
 
-// Yeni şube ekle: link ver -> kaydet -> hemen çek (giriş yapılmışsa oturumlu).
+// Yeni şube ekle: link ver -> kaydet -> hemen çek (giriş açıksa oturumlu).
 app.post("/api/branches", async (req, res) => {
   const { url, label } = req.body || {};
   if (!url) return res.status(400).json({ error: "URL gerekli" });
   await withLock(res, async () => {
     try {
       const branch = await addCustomBranch({ url, label });
-      const payload = await runScrape(branch, { login: await isLoggedIn() });
+      const payload = await runScrape(branch);
       res.json({ branch: { slug: branch.slug, label: branch.label }, count: payload.count, averageRating: payload.averageRating });
     } catch (err) {
       res.status(400).json({ error: "Şube eklenemedi", detail: String(err?.message || err) });

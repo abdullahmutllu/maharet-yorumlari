@@ -301,28 +301,47 @@ export async function runScrape(
     viewport: { width: 1360, height: 950 },
   };
 
+  const CDP_URL = process.env.CDP_URL || "http://localhost:9222";
   let browser = null;
   let context;
-  if (LOGIN) {
-    // kalıcı profil (gerçek Chrome profiline dokunmaz; ayrı .gprofile klasörü)
-    try {
-      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, channel: "chrome", ...ctxOpts });
-    } catch {
-      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, ...ctxOpts });
+  let usingCDP = false;
+
+  // 1) ÖNCELİK: Kullanıcının "Google ile giriş" ile açtığı GERÇEK Chrome'a bağlan (CDP/9222).
+  //    Bu Chrome'da giriş gerçek olduğundan Google engellemez; oturum tam -> tüm yorumlar gelir.
+  try {
+    const b = await chromium.connectOverCDP(CDP_URL, { timeout: 2500 });
+    const ctx = b.contexts()[0];
+    if (ctx) {
+      browser = b;
+      context = ctx;
+      usingCDP = true;
+      console.log("CDP: giriş yapılmış Chrome'a bağlanıldı (tam kapsam modu).");
+    } else {
+      await b.close().catch(() => {});
     }
-  } else {
-    try {
-      browser = await chromium.launch({ ...launchArgs, channel: "chrome" });
-    } catch {
-      browser = await chromium.launch(launchArgs);
+  } catch {}
+
+  if (!usingCDP) {
+    if (LOGIN) {
+      try {
+        context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, channel: "chrome", ...ctxOpts });
+      } catch {
+        context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, ...ctxOpts });
+      }
+    } else {
+      try {
+        browser = await chromium.launch({ ...launchArgs, channel: "chrome" });
+      } catch {
+        browser = await chromium.launch(launchArgs);
+      }
+      context = await browser.newContext(ctxOpts);
     }
-    context = await browser.newContext(ctxOpts);
+    await context.addInitScript(() => {
+      Object.defineProperty(navigator, "webdriver", { get: () => undefined });
+      Object.defineProperty(navigator, "languages", { get: () => ["tr-TR", "tr", "en"] });
+      Object.defineProperty(navigator, "plugins", { get: () => [1, 2, 3, 4, 5] });
+    });
   }
-  await context.addInitScript(() => {
-    Object.defineProperty(navigator, "webdriver", { get: () => undefined });
-    Object.defineProperty(navigator, "languages", { get: () => ["tr-TR", "tr", "en"] });
-    Object.defineProperty(navigator, "plugins", { get: () => [1, 2, 3, 4, 5] });
-  });
 
   // Google oturumu açık mı?
   const isLoggedIn = async () => {
@@ -346,31 +365,36 @@ export async function runScrape(
   ];
 
   try {
-    // 1) ısınma + consent (bir kez; çerezler context'te kalır)
-    const warm = await context.newPage();
-    await warm.goto("https://www.google.com/?hl=tr", { waitUntil: "domcontentloaded", timeout: 60000 });
-    await sleep(1500);
-    await dismissConsent(warm);
+    // 1) ısınma + consent (CDP'de gerek yok — kullanıcının Chrome'u zaten hazır)
+    if (!usingCDP) {
+      const warm = await context.newPage();
+      await warm.goto("https://www.google.com/?hl=tr", { waitUntil: "domcontentloaded", timeout: 60000 });
+      await sleep(1500);
+      await dismissConsent(warm);
 
-    // GİRİŞ MODU: oturum yoksa kullanıcıdan giriş bekle (görünür pencerede).
-    if (LOGIN) {
-      if (await isLoggedIn()) {
-        console.log("Kayıtlı Google oturumu bulundu, devam ediliyor.");
-        await writeFile(LOGIN_MARKER, "1").catch(() => {});
-      } else if (headless) {
-        console.warn("UYARI: Giriş modu açık ama oturum yok ve headless. Önce arayüzden 'Google ile giriş yap' veya:\n  LOGIN=1 HEADLESS=0 npm run scrape " + branch.slug);
-      } else {
-        console.log("\n>>> GİRİŞ GEREKLİ: Açılan pencerede Google hesabınızla giriş yapın.");
-        console.log(">>> Giriş algılanınca otomatik devam edecek (en fazla ~8 dk beklenir)...\n");
-        await warm.goto("https://accounts.google.com/", { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() => {});
-        const deadline = Date.now() + 8 * 60 * 1000;
-        while (Date.now() < deadline && !(await isLoggedIn())) await sleep(3000);
-        const ok = await isLoggedIn();
-        if (ok) await writeFile(LOGIN_MARKER, "1").catch(() => {});
-        console.log(ok ? "✓ Giriş algılandı, çekime başlanıyor." : "Giriş algılanamadı; yine de denenecek.");
+      // GİRİŞ MODU (kalıcı profil): oturum yoksa görünür pencerede giriş bekle.
+      if (LOGIN) {
+        if (await isLoggedIn()) {
+          console.log("Kayıtlı Google oturumu bulundu, devam ediliyor.");
+          await writeFile(LOGIN_MARKER, "1").catch(() => {});
+        } else if (headless) {
+          console.warn("UYARI: Giriş modu açık ama oturum yok ve headless. Önce arayüzden 'Google ile giriş' yapın.");
+        } else {
+          console.log("\n>>> GİRİŞ GEREKLİ: Açılan pencerede Google hesabınızla giriş yapın...\n");
+          await warm.goto("https://accounts.google.com/", { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() => {});
+          const deadline = Date.now() + 8 * 60 * 1000;
+          while (Date.now() < deadline && !(await isLoggedIn())) await sleep(3000);
+          const ok = await isLoggedIn();
+          if (ok) await writeFile(LOGIN_MARKER, "1").catch(() => {});
+          console.log(ok ? "✓ Giriş algılandı." : "Giriş algılanamadı; yine de denenecek.");
+        }
       }
+      await warm.close().catch(() => {});
+    } else if (await isLoggedIn()) {
+      console.log("✓ CDP oturumu Google'a giriş yapmış durumda — tam kapsam bekleniyor.");
+    } else {
+      console.warn("CDP bağlandı ama Google oturumu görünmüyor. Açılan Chrome'da giriş yaptığınızdan emin olun.");
     }
-    await warm.close().catch(() => {});
 
     // Önceki kayıttan başla (birikimli; tekrar çalıştırınca kapsam artar).
     try {
@@ -498,7 +522,12 @@ export async function runScrape(
 
     reviews = [...merged.values()];
   } finally {
-    await (browser ? browser.close() : context.close()).catch(() => {});
+    if (usingCDP) {
+      // Kullanıcının Chrome'unu KAPATMA; sadece bağlantıyı bırak.
+      // (Açtığımız sekmeler runPass içinde zaten kapatıldı.)
+    } else {
+      await (browser ? browser.close() : context.close()).catch(() => {});
+    }
   }
 
   // tekilleştir (review_id'ye göre)
