@@ -291,6 +291,8 @@ export async function runScrape(
 ) {
   const outFile = outFileOpt || join(DATA_DIR, `reviews-${branch.slug}.json`);
   const searchUrl = buildSearchUrl(branch.placeUrl, branch.name);
+  // Hedef yer kimliği — arama bir LİSTE getirirse doğru sonucu seçmek için.
+  const targetFid = (String(branch.placeUrl || "").match(/!1s(0x[0-9a-f]+:0x[0-9a-f]+)/i) || [])[1] || "";
   console.log(`\n######## Şube: ${branch.label} (${branch.name}) ########`);
   console.log(`Arama URL: ${searchUrl}`);
   console.log(`Tarayıcı modu: ${headless ? "headless" : "görünür"}`);
@@ -424,6 +426,22 @@ export async function runScrape(
         await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
         await sleep(3500);
         await dismissConsent(page);
+
+        // Arama tek yere değil de LİSTEYE düştüyse (genel/kısa isim), hedef fid'li
+        // (yoksa ilk) sonucu tıkla ki yer sayfası açılsın.
+        const clickedFromList = await page.evaluate((fid) => {
+          const hasReviews = !!document.querySelector("div[data-review-id]");
+          const hasReviewTab = [...document.querySelectorAll('[role="tab"]')].some((t) =>
+            /yorum|review/i.test(t.getAttribute("aria-label") || t.textContent || "")
+          );
+          if (hasReviews || hasReviewTab) return false;
+          const links = [...document.querySelectorAll('[role="feed"] a[href*="/maps/place/"]')];
+          if (!links.length) return false;
+          const target = (fid && links.find((a) => a.href.includes(fid))) || links[0];
+          target.click();
+          return true;
+        }, targetFid);
+        if (clickedFromList) await sleep(3500);
 
         const opened = await clickReviewsTab(page);
         if (!opened) console.warn(`[${s.key}] Yorumlar sekmesi bulunamadı.`);

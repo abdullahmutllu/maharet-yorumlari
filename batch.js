@@ -33,9 +33,14 @@ const places = dir.places
 console.log(`Toplu çekim: ${dir.query} — ${places.length} restoran`);
 console.log(`Çıktı: ${OUT_DIR}\n`);
 
-// Tek bir paylaşılan giriş Chrome'u (CDP) — tüm çekimler bunu kullanır (tek tarayıcı, hızlı).
-try { await launchLoginChrome(); } catch (e) { console.warn("Giriş Chrome'u açılamadı, oturumsuz devam:", e.message); }
-console.log("CDP (giriş Chrome'u) aktif mi:", await cdpAlive(), "\n");
+// USE_CDP=1 ile tek paylaşılan giriş Chrome'u (hızlı ama uzun işte kırılgan).
+// Varsayılan: her restoran kendi tarayıcısında (oturumsuz, sağlam).
+if (process.env.USE_CDP === "1") {
+  try { await launchLoginChrome(); } catch (e) { console.warn("Giriş Chrome'u açılamadı:", e.message); }
+  console.log("CDP aktif mi:", await cdpAlive(), "\n");
+} else {
+  console.log("Mod: her restoran kendi tarayıcısında (oturumsuz)\n");
+}
 
 const slugFor = (p) => `${slugify(p.name)}-${(p.fid || "").replace(/[^0-9a-f]/gi, "").slice(-6) || "x"}`;
 
