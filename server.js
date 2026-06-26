@@ -9,7 +9,7 @@ import { PORT } from "./config.js";
 import { getAllBranches, getBranch, addCustomBranch } from "./branches.js";
 import { runScrape } from "./scrape.js";
 import { launchLoginChrome, cdpAlive } from "./login.js";
-import { discoverPlaces } from "./discover.js";
+import { discoverPlaces, discoverCity } from "./discover.js";
 import { slugify } from "./branches.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -106,6 +106,21 @@ app.post("/api/discover", async (req, res) => {
       res.json(payload);
     } catch (err) {
       res.status(500).json({ error: "Keşfet başarısız", detail: String(err?.message || err) });
+    }
+  });
+});
+
+// KEŞFET (şehir): tüm ilçeleri gezip birleşik dizin
+app.post("/api/discover-city", async (req, res) => {
+  const city = (req.body && req.body.city) ? String(req.body.city).trim() : "";
+  const category = (req.body && req.body.category) ? String(req.body.category).trim() : "restoran";
+  if (!city) return res.status(400).json({ error: "Şehir gerekli" });
+  await withLock(res, async () => {
+    try {
+      const payload = await discoverCity(city, category);
+      res.json(payload);
+    } catch (err) {
+      res.status(500).json({ error: "Şehir taraması başarısız", detail: String(err?.message || err) });
     }
   });
 });

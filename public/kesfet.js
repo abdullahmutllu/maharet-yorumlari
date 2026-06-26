@@ -7,6 +7,8 @@ const els = {
   q: document.getElementById("q"),
   goBtn: document.getElementById("go-btn"),
   status: document.getElementById("status"),
+  city: document.getElementById("city"),
+  cityBtn: document.getElementById("city-btn"),
   controls: document.getElementById("controls"),
   filter: document.getElementById("filter"),
   sort: document.getElementById("sort"),
@@ -80,6 +82,32 @@ async function discover(query) {
     els.goBtn.disabled = false;
     els.goBtn.classList.remove("is-loading");
     els.goBtn.querySelector(".btn-label").textContent = "Keşfet";
+  }
+}
+
+async function scanCity(city) {
+  els.cityBtn.disabled = true;
+  els.cityBtn.classList.add("is-loading");
+  els.cityBtn.querySelector(".btn-label").textContent = "Taranıyor";
+  els.status.textContent = `${city}: tüm ilçeler taranıyor… (birkaç dakika)`;
+  try {
+    const r = await fetch("/api/discover-city", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ city }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || data.error || "Hata");
+    state.places = Array.isArray(data.places) ? data.places : [];
+    state.query = data.query || city;
+    els.status.textContent = `${state.places.length} işletme bulundu (${city}, tüm ilçeler).`;
+    render();
+  } catch (e) {
+    els.status.textContent = "Hata: " + e.message + " (Keşfet yalnızca yerel sunucuda çalışır)";
+  } finally {
+    els.cityBtn.disabled = false;
+    els.cityBtn.classList.remove("is-loading");
+    els.cityBtn.querySelector(".btn-label").textContent = "Tüm şehri tara";
   }
 }
 
@@ -164,6 +192,7 @@ async function exportData(fmt) {
 
 // ---------- Olaylar ----------
 els.form.addEventListener("submit", (e) => { e.preventDefault(); const q = els.q.value.trim(); if (q) discover(q); });
+els.cityBtn.addEventListener("click", () => { const c = els.city.value.trim(); if (c) scanCity(c); else els.status.textContent = "Şehir yaz (ör. Ankara)."; });
 els.filter.addEventListener("input", (e) => { state.filter = e.target.value; render(); });
 els.sort.addEventListener("change", (e) => { state.sort = e.target.value; render(); });
 els.exportEl.addEventListener("click", (e) => { const b = e.target.closest("button[data-fmt]"); if (b) exportData(b.dataset.fmt); });
