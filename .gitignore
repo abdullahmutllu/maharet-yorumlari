@@ -2,8 +2,11 @@ node_modules/
 *.log
 .DS_Store
 
-# Scraper'ın ürettiği yerel veri (yayınlanan kopya docs/reviews.json'dadır)
+# Scraper'ın ürettiği yerel veri (yayınlanan kopya docs/ içindedir)
 data/
+
+# Giriş modu Chrome profili (Google oturumu — asla commit'lenmemeli)
+.gprofile/
 
 # Geçici / hata ayıklama
 .playwright-mcp/

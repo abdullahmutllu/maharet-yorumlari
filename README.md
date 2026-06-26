@@ -30,6 +30,19 @@ npm start                 # http://localhost:4545 (şube seçici + arama + filtr
 > Headless çalışır. Görünür tarayıcı için: `HEADLESS=0 npm run scrape`
 > Port değiştirmek için: `PORT=3001 npm start`
 
+### Tam kapsam — Giriş modu (opsiyonel)
+
+Oturum açmadan Google, kaydırmada sunduğu yorumları sınırlar (örn. bir şubede
+~%89'da tıkanır). **Tüm yorumlara** ulaşmak için tek seferlik Google girişi:
+
+```bash
+LOGIN=1 HEADLESS=0 npm run scrape izmir   # açılan pencerede Google'a giriş yap
+```
+
+Giriş `.gprofile/` klasörüne kaydedilir (commit edilmez). Sonraki çekimler bu
+oturumu kullanır; istersen headless de çalışır: `LOGIN=1 npm run scrape izmir`.
+Scraper, hedef sayıya (Google'daki toplam) veya doygunluğa kadar turları tekrar eder.
+
 ## GitHub Pages (statik yayın)
 
 GitHub Pages Node çalıştırmaz; bu yüzden `docs/` altına, çekilen yorumları gömülü

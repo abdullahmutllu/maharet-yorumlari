@@ -241,28 +241,51 @@ export async function runScrape(
   console.log(`Arama URL: ${searchUrl}`);
   console.log(`Tarayıcı modu: ${headless ? "headless" : "görünür"}`);
 
+  // GİRİŞ MODU: LOGIN=1 ile kalıcı profil kullanılır (Google oturumu .gprofile'da saklanır).
+  // Oturum açıldığında Google daha fazla (genelde tüm) yorumu sunar -> tavan yükselir.
+  const LOGIN = process.env.LOGIN === "1" || process.env.USE_PROFILE === "1";
+  const PROFILE_DIR = process.env.PROFILE_DIR || join(__dirname, ".gprofile");
+  if (LOGIN) console.log(`Giriş modu: AÇIK (profil: ${PROFILE_DIR})`);
+
   const launchArgs = {
     headless,
     args: ["--disable-blink-features=AutomationControlled", "--no-sandbox", "--lang=tr-TR"],
   };
-  let browser;
-  try {
-    browser = await chromium.launch({ ...launchArgs, channel: "chrome" });
-  } catch {
-    browser = await chromium.launch(launchArgs);
-  }
-
-  const context = await browser.newContext({
+  const ctxOpts = {
     userAgent: UA,
     locale: "tr-TR",
     timezoneId: "Europe/Istanbul",
     viewport: { width: 1360, height: 950 },
-  });
+  };
+
+  let browser = null;
+  let context;
+  if (LOGIN) {
+    // kalıcı profil (gerçek Chrome profiline dokunmaz; ayrı .gprofile klasörü)
+    try {
+      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, channel: "chrome", ...ctxOpts });
+    } catch {
+      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchArgs, ...ctxOpts });
+    }
+  } else {
+    try {
+      browser = await chromium.launch({ ...launchArgs, channel: "chrome" });
+    } catch {
+      browser = await chromium.launch(launchArgs);
+    }
+    context = await browser.newContext(ctxOpts);
+  }
   await context.addInitScript(() => {
     Object.defineProperty(navigator, "webdriver", { get: () => undefined });
     Object.defineProperty(navigator, "languages", { get: () => ["tr-TR", "tr", "en"] });
     Object.defineProperty(navigator, "plugins", { get: () => [1, 2, 3, 4, 5] });
   });
+
+  // Google oturumu açık mı?
+  const isLoggedIn = async () => {
+    const cookies = await context.cookies("https://www.google.com");
+    return cookies.some((c) => c.name === "SID" || c.name === "SAPISID" || c.name === "__Secure-1PSID");
+  };
 
   let reviews = [];
   const merged = new Map();
@@ -285,6 +308,22 @@ export async function runScrape(
     await warm.goto("https://www.google.com/?hl=tr", { waitUntil: "domcontentloaded", timeout: 60000 });
     await sleep(1500);
     await dismissConsent(warm);
+
+    // GİRİŞ MODU: oturum yoksa kullanıcıdan giriş bekle (görünür pencerede).
+    if (LOGIN) {
+      if (await isLoggedIn()) {
+        console.log("Kayıtlı Google oturumu bulundu, devam ediliyor.");
+      } else if (headless) {
+        console.warn("UYARI: Giriş modu açık ama oturum yok ve headless. Önce şunu çalıştırıp giriş yapın:\n  LOGIN=1 HEADLESS=0 npm run scrape " + branch.slug);
+      } else {
+        console.log("\n>>> GİRİŞ GEREKLİ: Açılan pencerede Google hesabınızla giriş yapın.");
+        console.log(">>> Giriş algılanınca otomatik devam edecek (en fazla ~8 dk beklenir)...\n");
+        await warm.goto("https://accounts.google.com/", { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() => {});
+        const deadline = Date.now() + 8 * 60 * 1000;
+        while (Date.now() < deadline && !(await isLoggedIn())) await sleep(3000);
+        console.log((await isLoggedIn()) ? "✓ Giriş algılandı, çekime başlanıyor." : "Giriş algılanamadı; yine de denenecek.");
+      }
+    }
     await warm.close().catch(() => {});
 
     // Önceki kayıttan başla (birikimli; tekrar çalıştırınca kapsam artar).
@@ -355,7 +394,7 @@ export async function runScrape(
 
     reviews = [...merged.values()];
   } finally {
-    await browser.close().catch(() => {});
+    await (browser ? browser.close() : context.close()).catch(() => {});
   }
 
   // tekilleştir (review_id'ye göre)
