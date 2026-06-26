@@ -501,6 +501,14 @@ h1 {
   margin-bottom: 4px;
 }
 
+.deep-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
 .saved-dirs {
   display: flex;
   flex-wrap: wrap;

@@ -66,9 +66,10 @@ export async function clearLogin() {
   return { loggedIn: false };
 }
 
-// PLACE_URL'den arama URL'i bileşenlerini çıkar.
+// PLACE_URL'den arama URL'i bileşenlerini çıkar (@lat,lng veya !3d!4d biçiminden).
 function buildSearchUrl(placeUrl, name) {
-  const coords = placeUrl.match(/@(-?[\d.]+),(-?[\d.]+)/);
+  let coords = placeUrl.match(/@(-?[\d.]+),(-?[\d.]+)/);
+  if (!coords) coords = placeUrl.match(/!3d(-?[\d.]+)!4d(-?[\d.]+)/);
   const at = coords ? `/@${coords[1]},${coords[2]},17z` : "";
   return `https://www.google.com/maps/search/${encodeURIComponent(name)}${at}?hl=tr`;
 }

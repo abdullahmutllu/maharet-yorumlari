@@ -9,6 +9,7 @@ const els = {
   status: document.getElementById("status"),
   city: document.getElementById("city"),
   cityBtn: document.getElementById("city-btn"),
+  deep: document.getElementById("deep"),
   saved: document.getElementById("saved"),
   controls: document.getElementById("controls"),
   filter: document.getElementById("filter"),
@@ -69,7 +70,7 @@ async function discover(query) {
     const r = await fetch("/api/discover", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, deep: els.deep.checked }),
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.detail || data.error || "Hata");
@@ -95,7 +96,7 @@ async function scanCity(city) {
     const r = await fetch("/api/discover-city", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ city }),
+      body: JSON.stringify({ city, deep: els.deep.checked }),
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.detail || data.error || "Hata");

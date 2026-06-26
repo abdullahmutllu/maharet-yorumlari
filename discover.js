@@ -27,6 +27,14 @@ export const CITY_AREAS = {
   ],
 };
 
+// Restoran alt-türleri: derin taramada tek "restoran" aramasının ~120 sınırını aşmak için
+// her tür ayrı aranıp birleştirilir (yalnızca yeme-içme; araç restoran-odaklı).
+export const FOOD_CATEGORIES = [
+  "restoran", "lokanta", "ev yemekleri", "kebapçı", "dönerci", "pideci", "pizzacı",
+  "izgara", "köfteci", "çorbacı", "kahvaltı", "cafe", "mantı", "çiğköfte",
+  "balık restoran", "tatlıcı", "fast food", "burger", "meyhane", "vegan restoran",
+];
+
 function buildSearchUrl(query) {
   if (/^https?:\/\/(www\.)?google\.[^/]+\/maps\//.test(query)) return query;
   return `https://www.google.com/maps/search/${encodeURIComponent(query)}?hl=tr`;
@@ -116,58 +124,72 @@ async function save(query, places) {
   return payload;
 }
 
-// Tek bölge dizini.
-export async function discoverPlaces(query, { headless = process.env.HEADLESS !== "0" } = {}) {
-  console.log(`Keşfet: "${query}"`);
-  const { browser, context } = await launch(headless);
-  let places = [];
-  try {
-    const warm = await context.newPage();
-    await warm.goto("https://www.google.com/?hl=tr", { waitUntil: "domcontentloaded", timeout: 60000 });
-    await sleep(1200); await dismissConsent(warm); await warm.close().catch(() => {});
-    const page = await context.newPage();
-    places = await discoverOnPage(page, query);
-    await page.close().catch(() => {});
-  } finally { await browser.close().catch(() => {}); }
-  return save(query, dedupe(places));
+// Bir sorgu listesini paralel batch'lerle gezip birleştirir (ortak çekirdek).
+async function runQueriesMerged(context, queries, { concurrency = 3, onProgress } = {}) {
+  const merged = new Map();
+  for (let i = 0; i < queries.length; i += concurrency) {
+    const batch = queries.slice(i, i + concurrency);
+    const results = await Promise.all(
+      batch.map(async (q) => {
+        const page = await context.newPage();
+        try { return await discoverOnPage(page, q, { label: q }); }
+        catch (e) { console.warn(`  [${q}] hata: ${e.message}`); return []; }
+        finally { await page.close().catch(() => {}); }
+      })
+    );
+    for (const arr of results) for (const p of arr) merged.set(p.fid || p.placeUrl || p.name, p);
+    if (onProgress) onProgress(Math.min(i + concurrency, queries.length), queries.length, merged.size);
+  }
+  return [...merged.values()];
 }
 
-// Şehir dizini: tüm ilçeleri (paralel, batch) gezip birleştir.
-export async function discoverCity(city, category = "restoran", { headless = process.env.HEADLESS !== "0", concurrency = 3, areas } = {}) {
-  const list = areas || CITY_AREAS[slugify(city)] || CITY_AREAS[String(city).toLowerCase()] || null;
-  if (!list) throw new Error(`"${city}" için ilçe listesi yok. Bilinen: ${Object.keys(CITY_AREAS).join(", ")}`);
-  console.log(`Şehir taraması: ${city} / ${category} — ${list.length} bölge`);
-
+async function withBrowser(headless, fn) {
   const { browser, context } = await launch(headless);
-  const merged = new Map();
   try {
     const warm = await context.newPage();
     await warm.goto("https://www.google.com/?hl=tr", { waitUntil: "domcontentloaded", timeout: 60000 });
     await sleep(1200); await dismissConsent(warm); await warm.close().catch(() => {});
-
-    for (let i = 0; i < list.length; i += concurrency) {
-      const batch = list.slice(i, i + concurrency);
-      const results = await Promise.all(
-        batch.map(async (area) => {
-          const page = await context.newPage();
-          try { return await discoverOnPage(page, `${area} ${category}`, { label: area }); }
-          catch (e) { console.warn(`  [${area}] hata: ${e.message}`); return []; }
-          finally { await page.close().catch(() => {}); }
-        })
-      );
-      for (const arr of results) for (const p of arr) merged.set(p.fid || p.placeUrl || p.name, p);
-      console.log(`— Bölgeler ${i + 1}-${Math.min(i + concurrency, list.length)}/${list.length} bitti → birleşik: ${merged.size}`);
-    }
+    return await fn(context);
   } finally { await browser.close().catch(() => {}); }
+}
 
-  return save(`${city} ${category} (tüm ilçeler)`, [...merged.values()]);
+// Tek bölge dizini. deep=true -> restoran alt-türlerini ayrı ayrı arayıp birleştir (daha tam).
+export async function discoverPlaces(query, { headless = process.env.HEADLESS !== "0", deep = false, concurrency = 3 } = {}) {
+  const queries = deep ? FOOD_CATEGORIES.map((c) => `${query} ${c}`) : [query];
+  console.log(`Keşfet: "${query}"${deep ? ` (derin: ${queries.length} restoran türü)` : ""}`);
+  const places = await withBrowser(headless, (context) =>
+    runQueriesMerged(context, queries, {
+      concurrency,
+      onProgress: deep ? (done, total, size) => console.log(`  türler ${done}/${total} → birleşik: ${size}`) : null,
+    })
+  );
+  return save(query, places);
+}
+
+// Şehir dizini: tüm ilçeleri gez. deep=true -> her ilçede restoran alt-türlerini de ayrı ara.
+export async function discoverCity(city, category = "restoran", { headless = process.env.HEADLESS !== "0", concurrency = 3, areas, deep = false } = {}) {
+  const list = areas || CITY_AREAS[slugify(city)] || CITY_AREAS[String(city).toLowerCase()] || null;
+  if (!list) throw new Error(`"${city}" için ilçe listesi yok. Bilinen: ${Object.keys(CITY_AREAS).join(", ")}`);
+  const queries = deep
+    ? list.flatMap((area) => FOOD_CATEGORIES.map((c) => `${area} ${c}`))
+    : list.map((area) => `${area} ${category}`);
+  console.log(`Şehir taraması: ${city} — ${list.length} bölge${deep ? ` × ${FOOD_CATEGORIES.length} tür = ${queries.length} arama` : ""}`);
+  const places = await withBrowser(headless, (context) =>
+    runQueriesMerged(context, queries, {
+      concurrency,
+      onProgress: (done, total, size) => console.log(`— ${done}/${total} arama bitti → birleşik: ${size}`),
+    })
+  );
+  return save(`${city} ${category}${deep ? " (tüm ilçeler, derin)" : " (tüm ilçeler)"}`, places);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const args = process.argv.slice(2);
+  let args = process.argv.slice(2);
+  const deep = args.includes("--deep");
+  args = args.filter((a) => a !== "--deep");
   if (args[0] === "--city") {
-    discoverCity(args[1] || "ankara", args[2] || "restoran").catch((e) => { console.error("Şehir taraması başarısız:", e); process.exit(1); });
+    discoverCity(args[1] || "ankara", args[2] || "restoran", { deep }).catch((e) => { console.error("Şehir taraması başarısız:", e); process.exit(1); });
   } else {
-    discoverPlaces(args.join(" ") || "Bornova restoran").catch((e) => { console.error("Keşfet başarısız:", e); process.exit(1); });
+    discoverPlaces(args.join(" ") || "Bornova restoran", { deep }).catch((e) => { console.error("Keşfet başarısız:", e); process.exit(1); });
   }
 }

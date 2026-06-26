@@ -99,10 +99,11 @@ app.post("/api/branches", async (req, res) => {
 // KEŞFET: bölge+kategori -> yer dizini (ad, puan, yorum sayısı, kategori/adres)
 app.post("/api/discover", async (req, res) => {
   const query = (req.body && req.body.query) ? String(req.body.query).trim() : "";
+  const deep = !!(req.body && req.body.deep);
   if (!query) return res.status(400).json({ error: "Sorgu (bölge + kategori) gerekli" });
   await withLock(res, async () => {
     try {
-      const payload = await discoverPlaces(query);
+      const payload = await discoverPlaces(query, { deep });
       res.json(payload);
     } catch (err) {
       res.status(500).json({ error: "Keşfet başarısız", detail: String(err?.message || err) });
@@ -114,10 +115,11 @@ app.post("/api/discover", async (req, res) => {
 app.post("/api/discover-city", async (req, res) => {
   const city = (req.body && req.body.city) ? String(req.body.city).trim() : "";
   const category = (req.body && req.body.category) ? String(req.body.category).trim() : "restoran";
+  const deep = !!(req.body && req.body.deep);
   if (!city) return res.status(400).json({ error: "Şehir gerekli" });
   await withLock(res, async () => {
     try {
-      const payload = await discoverCity(city, category);
+      const payload = await discoverCity(city, category, { deep });
       res.json(payload);
     } catch (err) {
       res.status(500).json({ error: "Şehir taraması başarısız", detail: String(err?.message || err) });
