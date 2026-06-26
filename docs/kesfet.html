@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keşfet — İşletme Dizini</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">İşletme Dizini · Keşfet</p>
+        <h1>Bölgedeki işletmeleri keşfet</h1>
+        <p class="muted" style="margin: 0 0 18px">
+          Bölge + kategori yaz (ör. <strong>Bornova restoran</strong>, <strong>Karşıyaka kahvaltı</strong>) →
+          tüm işletmelerin dizinini (puan, yorum sayısı, adres) çıkar.
+          <a href="index.html">← Yorumlar görünümüne dön</a>
+        </p>
+
+        <form id="discover-form" class="add-branch" autocomplete="off" style="border-top: none; margin-top: 0; padding-top: 0">
+          <input type="text" id="q" class="add-url" placeholder="Bölge + kategori: ör. Bornova restoran" required />
+          <button type="submit" class="btn" id="go-btn"><span class="btn-label">Keşfet</span></button>
+          <span class="muted add-status" id="status"></span>
+        </form>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="controls" id="controls" style="display: none">
+        <input type="search" id="filter" class="search" placeholder="Dizinde ara (ad / adres / kategori)…" autocomplete="off" />
+        <label class="sort">
+          <span class="muted">Sırala:</span>
+          <select id="sort">
+            <option value="reviews">En çok yorum</option>
+            <option value="rating">En yüksek puan</option>
+            <option value="name">Ada göre</option>
+          </select>
+        </label>
+        <div class="export" id="export">
+          <span class="muted">İndir:</span>
+          <button type="button" class="chip" data-fmt="csv">CSV</button>
+          <button type="button" class="chip" data-fmt="xlsx">Excel</button>
+          <button type="button" class="chip" data-fmt="json">JSON</button>
+        </div>
+      </section>
+
+      <p class="result-count muted" id="result-count"></p>
+      <div class="table-wrap">
+        <table class="dir-table" id="table" style="display: none">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>İşletme</th>
+              <th>Puan</th>
+              <th>Yorum</th>
+              <th>Bilgi (kategori · fiyat · adres)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p class="muted">Veriler Google Maps'ten alınmıştır. Keşfet özelliği yalnızca yerel sunucuda (npm start) çalışır.</p>
+    </footer>
+
+    <script src="kesfet.js"></script>
+  </body>
+</html>

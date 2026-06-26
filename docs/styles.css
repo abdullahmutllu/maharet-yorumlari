@@ -501,6 +501,78 @@ h1 {
   margin-bottom: 4px;
 }
 
+/* ---------- Dizin tablosu (Keşfet) ---------- */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.dir-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.dir-table th,
+.dir-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.dir-table thead th {
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+.dir-table tbody tr:hover {
+  background: #fbf7f2;
+}
+
+.dir-table td.num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.dir-table td.info {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  max-width: 360px;
+}
+
+.dir-table a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dir-table a:hover {
+  text-decoration: underline;
+}
+
+.chip.collect {
+  white-space: nowrap;
+}
+
+.eyebrow a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.eyebrow a:hover {
+  text-decoration: underline;
+}
+
 /* ---------- States ---------- */
 .empty {
   text-align: center;

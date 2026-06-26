@@ -9,6 +9,8 @@ import { PORT } from "./config.js";
 import { getAllBranches, getBranch, addCustomBranch } from "./branches.js";
 import { runScrape } from "./scrape.js";
 import { launchLoginChrome, cdpAlive } from "./login.js";
+import { discoverPlaces } from "./discover.js";
+import { slugify } from "./branches.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -92,6 +94,31 @@ app.post("/api/branches", async (req, res) => {
       res.status(400).json({ error: "Şube eklenemedi", detail: String(err?.message || err) });
     }
   });
+});
+
+// KEŞFET: bölge+kategori -> yer dizini (ad, puan, yorum sayısı, kategori/adres)
+app.post("/api/discover", async (req, res) => {
+  const query = (req.body && req.body.query) ? String(req.body.query).trim() : "";
+  if (!query) return res.status(400).json({ error: "Sorgu (bölge + kategori) gerekli" });
+  await withLock(res, async () => {
+    try {
+      const payload = await discoverPlaces(query);
+      res.json(payload);
+    } catch (err) {
+      res.status(500).json({ error: "Keşfet başarısız", detail: String(err?.message || err) });
+    }
+  });
+});
+
+// Kaydedilmiş bir dizini getir
+app.get("/api/places", async (req, res) => {
+  const slug = slugify(req.query.query || req.query.slug || "");
+  try {
+    const data = await readFile(join(__dirname, "data", `places-${slug}.json`), "utf8");
+    res.type("application/json").send(data);
+  } catch {
+    res.status(404).json({ error: "Dizin bulunamadı", slug });
+  }
 });
 
 app.listen(PORT, () => {

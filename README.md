@@ -49,6 +49,19 @@ Giriş `.gprofile/` klasörüne kaydedilir (commit edilmez). Sonraki çekimler b
 oturumu kullanır; istersen headless de çalışır: `LOGIN=1 npm run scrape izmir`.
 Scraper, hedef sayıya (Google'daki toplam) veya doygunluğa kadar turları tekrar eder.
 
+## Keşfet — işletme dizini (bir ilçedeki tüm yerler)
+
+`npm start` → http://localhost:4545 → üstte **"İşletme dizini keşfet →"**.
+Bölge + kategori yaz (ör. **Bornova restoran**) → tüm işletmelerin dizini gelir:
+ad, puan, **yorum sayısı**, kategori/fiyat/adres, feature-id, harita linki. Filtrele,
+sırala, **CSV/Excel/JSON** indir. Her satırda **"Yorumları topla"** ile o işletmeyi
+şube olarak ekleyip tüm yorumlarını çekebilirsin.
+
+Komut satırı: `npm run discover "Bornova restoran"` → `data/places-<slug>.json`.
+
+> Not: Bir arama ~120 yerle sınırlıdır; daha geniş alan için aramayı semt semt böl.
+> Keşfet özelliği yalnızca yerel sunucuda çalışır (statik sitede değil).
+
 ## GitHub Pages (statik yayın)
 
 GitHub Pages Node çalıştırmaz; bu yüzden `docs/` altına, çekilen yorumları gömülü

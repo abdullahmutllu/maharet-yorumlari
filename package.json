@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "scrape": "node scrape.js",
+    "discover": "node discover.js",
     "start": "node server.js",
     "build": "node build-static.js"
   },

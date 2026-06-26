@@ -16,7 +16,7 @@ const DATA = join(__dirname, "data");
 await mkdir(DOCS, { recursive: true });
 
 // statik frontend
-for (const f of ["index.html", "app.js", "styles.css"]) {
+for (const f of ["index.html", "app.js", "styles.css", "kesfet.html", "kesfet.js"]) {
   await copyFile(join(__dirname, "public", f), join(DOCS, f));
 }
 
