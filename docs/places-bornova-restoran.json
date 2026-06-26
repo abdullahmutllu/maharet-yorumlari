@@ -1,0 +1,400 @@
+{
+  "query": "Bornova restoran",
+  "slug": "bornova-restoran",
+  "scrapedAt": "2026-06-26T07:32:42.784Z",
+  "count": 49,
+  "places": [
+    {
+      "name": "Fors-Et Bornova Şubesi",
+      "rating": 4.4,
+      "reviewCount": 1621,
+      "info": "4,4(1.621) · ₺600–1.400 · Restoran ·  · 33. Sk. No:49Kapalı · Açılış zamanı: 11:30 · Restoran ·  · 33. Sk. No:49 · Kapalı · Açılış zamanı: 11:30",
+      "fid": "0x14b97df701c6cb5f:0xd7a5eebe17303b3",
+      "placeUrl": "https://www.google.com/maps/place/Fors-Et+Bornova+%C5%9Eubesi/data=!4m7!3m6!1s0x14b97df701c6cb5f:0xd7a5eebe17303b3!8m2!3d38.4693491!4d27.2245837!16s%2Fg%2F11s_w31x56!19sChIJX8vGAfd9uRQRswNz4eteeg0"
+    },
+    {
+      "name": "Buenas",
+      "rating": 4.4,
+      "reviewCount": 2286,
+      "info": "4,4(2.286) · ₺400–1.200 · Restoran ·  · 83. Sk. No:10Yemyeşil teraslı canlı bistroKapalı · Açılış zamanı: 12:00 · Restoran ·  · 83. Sk. No:10 · Yemyeşil teraslı canlı bistro · Kapalı · Açılış zaman",
+      "fid": "0x14b97d20b29bcf37:0xd5b75ab8161df381",
+      "placeUrl": "https://www.google.com/maps/place/Buenas/data=!4m7!3m6!1s0x14b97d20b29bcf37:0xd5b75ab8161df381!8m2!3d38.4640913!4d27.2195948!16s%2Fg%2F11fx7vr2jz!19sChIJN8-bsiB9uRQRgfMdFrhat9U"
+    },
+    {
+      "name": "Cumba Cafe Ve Restaurant",
+      "rating": 4.4,
+      "reviewCount": 1767,
+      "info": "4,4(1.767) · ₺2.000+ · Restoran ·  · İstanbul Cd. No:54Açılmak üzere · 11:00 · Restoran ·  · İstanbul Cd. No:54 · Açılmak üzere · 11:00",
+      "fid": "0x14b97ce6861eda39:0x39b5b846f80fd918",
+      "placeUrl": "https://www.google.com/maps/place/Cumba+Cafe+Ve+Restaurant/data=!4m7!3m6!1s0x14b97ce6861eda39:0x39b5b846f80fd918!8m2!3d38.4823887!4d27.2425432!16s%2Fg%2F1tdst1xf!19sChIJOdoehuZ8uRQRGNkP-Ea4tTk"
+    },
+    {
+      "name": "Buzuki Meyhane",
+      "rating": 4.6,
+      "reviewCount": 2019,
+      "info": "4,6(2.019) · ₺2.000+ · Meyhane ·  · Süvari Cd.Kapalı · Açılış zamanı: 12:00 · Meyhane ·  · Süvari Cd. · Kapalı · Açılış zamanı: 12:00",
+      "fid": "0x14b97d242adf7bbd:0x7044abcf2bc22d75",
+      "placeUrl": "https://www.google.com/maps/place/Buzuki+Meyhane/data=!4m7!3m6!1s0x14b97d242adf7bbd:0x7044abcf2bc22d75!8m2!3d38.4627902!4d27.2144665!16s%2Fg%2F11cnc0ztsm!19sChIJvXvfKiR9uRQRdS3CK8-rRHA"
+    },
+    {
+      "name": "Dönerci Vedat Usta | İzmir - Altındağ",
+      "rating": 4.5,
+      "reviewCount": 9439,
+      "info": "4,5(9.439) · ₺400–1.200 · Dönerci ·  · 4240. Sk. no.4/AKebap çeşitleri servis edilen şık restoranKapalı · Açılış zamanı: 11:30 · Dönerci ·  · 4240. Sk. no.4/A · Kebap çeşitleri servis edilen şık re",
+      "fid": "0x14b962eed2c70001:0x75f1cf7a96e56770",
+      "placeUrl": "https://www.google.com/maps/place/D%C3%B6nerci+Vedat+Usta+%7C+%C4%B0zmir+-+Alt%C4%B1nda%C4%9F/data=!4m7!3m6!1s0x14b962eed2c70001:0x75f1cf7a96e56770!8m2!3d38.4284387!4d27.2052763!16s%2Fg%2F11js_7xpwl!19sChIJAQDH0u5iuRQRcGfllnrP8XU"
+    },
+    {
+      "name": "Şırdancı Bilal",
+      "rating": 4.6,
+      "reviewCount": 811,
+      "info": "4,6(811) · ₺200–400 · Restoran ·  · Zafer Cad. No: 19A Küçükpark İzmirKapalı · Açılış zamanı: 11:30 · Restoran ·  · Zafer Cad. No: 19A Küçükpark İzmir · Kapalı · Açılış zamanı: 11:30",
+      "fid": "0x14b97ddd77ff14e9:0x2cdb478e3dba4568",
+      "placeUrl": "https://www.google.com/maps/place/%C5%9E%C4%B1rdanc%C4%B1+Bilal/data=!4m7!3m6!1s0x14b97ddd77ff14e9:0x2cdb478e3dba4568!8m2!3d38.460974!4d27.211921!16s%2Fg%2F11nnqz4h26!19sChIJ6RT_d919uRQRaEW6PY5H2yw"
+    },
+    {
+      "name": "ÇALI LOKANTA",
+      "rating": 4.9,
+      "reviewCount": 64,
+      "info": "4,9(64) · ₺200–400 · Restoran · 367. Sk. No:3-5bAçık · Kapanış saati: 20:00 · Restoran · 367. Sk. No:3-5b · Açık · Kapanış saati: 20:00",
+      "fid": "0x14b96355262a85e3:0x508336e16d7f87a1",
+      "placeUrl": "https://www.google.com/maps/place/%C3%87ALI+LOKANTA/data=!4m7!3m6!1s0x14b96355262a85e3:0x508336e16d7f87a1!8m2!3d38.4502999!4d27.2019896!16s%2Fg%2F11xh5_957q!19sChIJ44UqJlVjuRQRoYd_beE2g1A"
+    },
+    {
+      "name": "Cafe Rezine",
+      "rating": 4.6,
+      "reviewCount": 586,
+      "info": "4,6(586) · ₺200–400 · Kafe · Süvari Cd. No:14BAçık · Kapanış saati: 23:45 · Kafe · Süvari Cd. No:14B · Açık · Kapanış saati: 23:45",
+      "fid": "0x14b97d26c6d027ab:0xf69bb078efb7a7ac",
+      "placeUrl": "https://www.google.com/maps/place/Cafe+Rezine/data=!4m7!3m6!1s0x14b97d26c6d027ab:0xf69bb078efb7a7ac!8m2!3d38.4638377!4d27.2163956!16s%2Fg%2F1vgx2yv7!19sChIJqyfQxiZ9uRQRrKe373iwm_Y"
+    },
+    {
+      "name": "Teras Wine House Beer Garden",
+      "rating": 4.2,
+      "reviewCount": 1096,
+      "info": "4,2(1.096) · ₺400–1.400 · Restoran · Fevzi Çakmak Cd. No: 54Açık · Kapanış saati: 01:00 · Restoran · Fevzi Çakmak Cd. No: 54 · Açık · Kapanış saati: 01:00",
+      "fid": "0x14b97d261f2d274b:0xd04fa6734eb69307",
+      "placeUrl": "https://www.google.com/maps/place/Teras+Wine+House+Beer+Garden/data=!4m7!3m6!1s0x14b97d261f2d274b:0xd04fa6734eb69307!8m2!3d38.460186!4d27.216076!16s%2Fg%2F1tm1mgh1!19sChIJSyctHyZ9uRQRB5O2TnOmT9A"
+    },
+    {
+      "name": "PUREE",
+      "rating": 4.5,
+      "reviewCount": 480,
+      "info": "4,5(480) · ₺600–800 · Kahvaltı ·  · No1 Boliva Evleri Teras Katı, Cengizhan Caddesi Erzene MahallesiAçık · Kapanış saati: 23:00 · Kahvaltı ·  · No1 Boliva Evleri Teras Katı, Cengizhan Caddesi Erzen",
+      "fid": "0x14b97d2066564621:0xe6ce9c8194d0719f",
+      "placeUrl": "https://www.google.com/maps/place/PUREE/data=!4m7!3m6!1s0x14b97d2066564621:0xe6ce9c8194d0719f!8m2!3d38.4647651!4d27.227994!16s%2Fg%2F11fm9lwsqt!19sChIJIUZWZiB9uRQRn3HQlIGczuY"
+    },
+    {
+      "name": "Mandolin Cafe Forum Bornova AVM",
+      "rating": 4.2,
+      "reviewCount": 1034,
+      "info": "4,2(1.034) · ₺200–1.400 · Restoran ·  · Kazımdirik Mah., 372 Sok Forum Bornova AVM F Blok, No: 40/AAçık · Kapanış saati: 00:00 · Restoran ·  · Kazımdirik Mah., 372 Sok Forum Bornova AVM F Blok, No:",
+      "fid": "0x14b962d28811d2d1:0x2711bc5461d52d8f",
+      "placeUrl": "https://www.google.com/maps/place/Mandolin+Cafe+Forum+Bornova+AVM/data=!4m7!3m6!1s0x14b962d28811d2d1:0x2711bc5461d52d8f!8m2!3d38.4503927!4d27.2088978!16s%2Fg%2F1tczmp57!19sChIJ0dIRiNJiuRQRjy3VYVS8ESc"
+    },
+    {
+      "name": "Pinoliva Garden Restaurant",
+      "rating": 4.4,
+      "reviewCount": 556,
+      "info": "4,4(556) · ₺2.000+ · Restoran · 113. Sk. NO:103Kapalı · Açılış zamanı: 16:30 · Restoran · 113. Sk. NO:103 · Kapalı · Açılış zamanı: 16:30",
+      "fid": "0x14b97dcd5b5adf99:0x3ea5774112d6726e",
+      "placeUrl": "https://www.google.com/maps/place/Pinoliva+Garden+Restaurant/data=!4m7!3m6!1s0x14b97dcd5b5adf99:0x3ea5774112d6726e!8m2!3d38.4782922!4d27.2504843!16s%2Fg%2F11jl01s04_!19sChIJmd9aW819uRQRbnLWEkF3pT4"
+    },
+    {
+      "name": "Sevim Lokantası - Forum Bornova",
+      "rating": 4.1,
+      "reviewCount": 1069,
+      "info": "4,1(1.069) · ₺400–1.000 · Restoran ·  · 372/25 Sokak no 20/A24 saat açık · Restoran ·  · 372/25 Sokak no 20/A · 24 saat açık",
+      "fid": "0x14bbd87ffe187be5:0xcb289d03705c4759",
+      "placeUrl": "https://www.google.com/maps/place/Sevim+Lokantas%C4%B1+-+Forum+Bornova/data=!4m7!3m6!1s0x14bbd87ffe187be5:0xcb289d03705c4759!8m2!3d38.4484952!4d27.2079617!16s%2Fg%2F1tdfqg2s!19sChIJ5XsY_n_YuxQRWUdccAOdKMs"
+    },
+    {
+      "name": "Bornova Ocakbaşı",
+      "rating": 4.1,
+      "reviewCount": 85,
+      "info": "4,1(85) · ₺₺ · Mangal ·  · 180/2. Sk. No:3 D:FAçık · Kapanış saati: 02:00 · Mangal ·  · 180/2. Sk. No:3 D:F · Açık · Kapanış saati: 02:00",
+      "fid": "0x14b97d255e79395f:0x1c2fe410a4166b9",
+      "placeUrl": "https://www.google.com/maps/place/Bornova+Ocakba%C5%9F%C4%B1/data=!4m7!3m6!1s0x14b97d255e79395f:0x1c2fe410a4166b9!8m2!3d38.4617301!4d27.2100408!16s%2Fg%2F1td0k9tf!19sChIJXzl5XiV9uRQRuWZBCkH-wgE"
+    },
+    {
+      "name": "Tas Çorba Bornova",
+      "rating": 4,
+      "reviewCount": 1470,
+      "info": "4,0(1.470) · ₺200–400 · Çorba ·  · Mustafa Kemal Cd. No:114/CAçık · Kapanış saati: 04:00 · Çorba ·  · Mustafa Kemal Cd. No:114/C · Açık · Kapanış saati: 04:00",
+      "fid": "0x14b97d306fa6db75:0x263a0555bc6a88d0",
+      "placeUrl": "https://www.google.com/maps/place/Tas+%C3%87orba+Bornova/data=!4m7!3m6!1s0x14b97d306fa6db75:0x263a0555bc6a88d0!8m2!3d38.461723!4d27.205014!16s%2Fg%2F11j4wkn19f!19sChIJddumbzB9uRQR0IhqvFUFOiY"
+    },
+    {
+      "name": "Yakışıklı Restaurant",
+      "rating": 4.1,
+      "reviewCount": 189,
+      "info": "4,1(189) · ₺2.000+ · Restoran ·  · Üniversite Cd. No:124Açık · Kapanış saati: 15:00 · Restoran ·  · Üniversite Cd. No:124 · Açık · Kapanış saati: 15:00",
+      "fid": "0x14b9632dbf05f437:0xd55089271b02545e",
+      "placeUrl": "https://www.google.com/maps/place/Yak%C4%B1%C5%9F%C4%B1kl%C4%B1+Restaurant/data=!4m7!3m6!1s0x14b9632dbf05f437:0xd55089271b02545e!8m2!3d38.4457879!4d27.1858874!16s%2Fg%2F11l19jqq_j!19sChIJN_QFvy1juRQRXlQCGyeJUNU"
+    },
+    {
+      "name": "Meşhur Nazilli Pide ve Çorba Salonu",
+      "rating": 3.9,
+      "reviewCount": 732,
+      "info": "3,9(732) · ₺200–400 · Restoran ·  · 538. Sk. No.12 D:16Açık · Kapanış saati: 22:30 · Restoran ·  · 538. Sk. No.12 D:16 · Açık · Kapanış saati: 22:30",
+      "fid": "0x14b97cdf78112c6f:0x47f459bb1952903d",
+      "placeUrl": "https://www.google.com/maps/place/Me%C5%9Fhur+Nazilli+Pide+ve+%C3%87orba+Salonu/data=!4m7!3m6!1s0x14b97cdf78112c6f:0x47f459bb1952903d!8m2!3d38.4667383!4d27.2189774!16s%2Fg%2F1tx75pk0!19sChIJbywReN98uRQRPZBSGbtZ9Ec"
+    },
+    {
+      "name": "Villa levante Otel",
+      "rating": 4.3,
+      "reviewCount": 1075,
+      "info": "4,3(1.075) · 4 yıldızlı otelRestoranı ve bahçeleriyle zarif otel · 4 yıldızlı otel · Restoranı ve bahçeleriyle zarif otel",
+      "fid": "0x14b97d27515180cf:0xa5b3487c038c9d17",
+      "placeUrl": "https://www.google.com/maps/place/Villa+levante+Otel/data=!4m10!3m9!1s0x14b97d27515180cf:0xa5b3487c038c9d17!5m2!4m1!1i2!8m2!3d38.4641027!4d27.2203127!16s%2Fg%2F1pp2txx1d!19sChIJz4BRUSd9uRQRF52MA3xIs6U"
+    },
+    {
+      "name": "Çorbacı İso",
+      "rating": 5,
+      "reviewCount": 62,
+      "info": "5,0(62) · ₺200–400 · Çorbacı · 456. Sk. No:41A24 saat açık · Çorbacı · 456. Sk. No:41A · 24 saat açık",
+      "fid": "0x14b97d0015870fa3:0x7ff7b3a27cf92aae",
+      "placeUrl": "https://www.google.com/maps/place/%C3%87orbac%C4%B1+%C4%B0so/data=!4m7!3m6!1s0x14b97d0015870fa3:0x7ff7b3a27cf92aae!8m2!3d38.4702696!4d27.2204402!16s%2Fg%2F11nbbcw3ly!19sChIJow-HFQB9uRQRrir5fKKz938"
+    },
+    {
+      "name": "Cihan Et",
+      "rating": 4.2,
+      "reviewCount": 4032,
+      "info": "4,2(4.032) · ₺800–1.800 · Biftek ·  · 372. Sk. No:85-87Açılmak üzere · 11:00 · Biftek ·  · 372. Sk. No:85-87 · Açılmak üzere · 11:00",
+      "fid": "0x14b962cd8b32a0b5:0x9af7d4a082d57540",
+      "placeUrl": "https://www.google.com/maps/place/Cihan+Et/data=!4m7!3m6!1s0x14b962cd8b32a0b5:0x9af7d4a082d57540!8m2!3d38.4485889!4d27.2084791!16s%2Fg%2F11f1zlsn8d!19sChIJtaAyi81iuRQRQHXVgqDU95o"
+    },
+    {
+      "name": "Mayedar Çorba ve Kavurma",
+      "rating": 4.9,
+      "reviewCount": 56,
+      "info": "4,9(56) · Çorbacı · No:48 Fatih CaddesiAçık · Kapanış saati: 20:00 · Çorbacı · No:48 Fatih Caddesi · Açık · Kapanış saati: 20:00",
+      "fid": "0x14b96309f12b3f97:0xdd0057c619dc861a",
+      "placeUrl": "https://www.google.com/maps/place/Mayedar+%C3%87orba+ve+Kavurma/data=!4m7!3m6!1s0x14b96309f12b3f97:0xdd0057c619dc861a!8m2!3d38.439403!4d27.180199!16s%2Fg%2F11z5zyj1d7!19sChIJlz8r8QljuRQRGobcGcZXAN0"
+    },
+    {
+      "name": "Hey Döner İzmir",
+      "rating": 1.8,
+      "reviewCount": 13,
+      "info": "1,8(13) · Restoran · No:147B Ordu Bulvarı",
+      "fid": "0x14bbd90fe8dfdfd9:0xb0c07b55191ea84",
+      "placeUrl": "https://www.google.com/maps/place/Hey+D%C3%B6ner+%C4%B0zmir/data=!4m7!3m6!1s0x14bbd90fe8dfdfd9:0xb0c07b55191ea84!8m2!3d38.471314!4d27.098888!16s%2Fg%2F11z5bndjxz!19sChIJ2d_f6A_ZuxQRhOqRUbUHDAs"
+    },
+    {
+      "name": "Shakespeare Coffee&Bistro (Forum Bornova)",
+      "rating": 4.5,
+      "reviewCount": 663,
+      "info": "4,5(663) · ₺400–600 · Restoran ·  · Kazım Dirik Mah. 372 Sokak Forum Bornova AVM No: 26/104Açık · Kapanış saati: 22:00 · Restoran ·  · Kazım Dirik Mah. 372 Sokak Forum Bornova AVM No: 26/104 · Açık",
+      "fid": "0x14b963d51b305c97:0xc39f2f0bbfe25a1f",
+      "placeUrl": "https://www.google.com/maps/place/Shakespeare+Coffee%26Bistro+%28Forum+Bornova%29/data=!4m7!3m6!1s0x14b963d51b305c97:0xc39f2f0bbfe25a1f!8m2!3d38.4502139!4d27.2099045!16s%2Fg%2F11c59pn4m3!19sChIJl1wwG9VjuRQRH1rivwsvn8M"
+    },
+    {
+      "name": "Nejat Usta Bornova",
+      "rating": 4.1,
+      "reviewCount": 1087,
+      "info": "4,1(1.087) · ₺400–1.000 · Restoran ·  · Evka 3 Mah.129/11, Sanayi Sitesi No: 35 4Açık · Kapanış saati: 22:30 · Restoran ·  · Evka 3 Mah.129/11, Sanayi Sitesi No: 35 4 · Açık · Kapanış saati: 22:30",
+      "fid": "0x14b97c967a93c6e9:0xca670b1e7e1c5dbd",
+      "placeUrl": "https://www.google.com/maps/place/Nejat+Usta+Bornova/data=!4m7!3m6!1s0x14b97c967a93c6e9:0xca670b1e7e1c5dbd!8m2!3d38.4630132!4d27.2504674!16s%2Fg%2F11gmgd5tz4!19sChIJ6caTepZ8uRQRvV0cfh4LZ8o"
+    },
+    {
+      "name": "Şefin Tavsiyesi",
+      "rating": 4.5,
+      "reviewCount": 86,
+      "info": "4,5(86) · ₺200–400 · Restoran · 544. Sk.Açık · Kapanış saati: 17:00 · Restoran · 544. Sk. · Açık · Kapanış saati: 17:00",
+      "fid": "0x14b97d20fdd09923:0x67e1140ab2402650",
+      "placeUrl": "https://www.google.com/maps/place/%C5%9Eefin+Tavsiyesi/data=!4m7!3m6!1s0x14b97d20fdd09923:0x67e1140ab2402650!8m2!3d38.4666322!4d27.2178205!16s%2Fg%2F11clhpzd__!19sChIJI5nQ_SB9uRQRUCZAsgoU4Wc"
+    },
+    {
+      "name": "Two Amigos Taco Bornova",
+      "rating": 4.5,
+      "reviewCount": 571,
+      "info": "4,5(571) · ₺400–600 · Meksika · Süvari Cd. No:12/BKapalı · Açılış zamanı: 12:00 · Meksika · Süvari Cd. No:12/B · Kapalı · Açılış zamanı: 12:00",
+      "fid": "0x14b97d26c0b15555:0xc78dd29f87a1ca38",
+      "placeUrl": "https://www.google.com/maps/place/Two+Amigos+Taco+Bornova/data=!4m7!3m6!1s0x14b97d26c0b15555:0xc78dd29f87a1ca38!8m2!3d38.4638275!4d27.2162359!16s%2Fg%2F11tjw834q9!19sChIJVVWxwCZ9uRQROMqhh5_Sjcc"
+    },
+    {
+      "name": "Polen Restoran",
+      "rating": 4.5,
+      "reviewCount": 250,
+      "info": "4,5(250) · ₺600–800 · Restoran ·  · Sarmaşık Sk. No: 20/AAçık · Kapanış saati: 00:00 · Restoran ·  · Sarmaşık Sk. No: 20/A · Açık · Kapanış saati: 00:00",
+      "fid": "0x14b97d7a1b98bec1:0x6cd012f70243b732",
+      "placeUrl": "https://www.google.com/maps/place/Polen+Restoran/data=!4m7!3m6!1s0x14b97d7a1b98bec1:0x6cd012f70243b732!8m2!3d38.5069427!4d27.2214617!16s%2Fg%2F11jk2pz8k7!19sChIJwb6YG3p9uRQRMrdDAvcS0Gw"
+    },
+    {
+      "name": "Bornovada Mantıcı | Ebruli Mantı",
+      "rating": 4.4,
+      "reviewCount": 1143,
+      "info": "4,4(1.143) · ₺400–600 · Mantı ·  · Zafer Cd. No:32Kapalı · Açılış zamanı: 12:00 · Mantı ·  · Zafer Cd. No:32 · Kapalı · Açılış zamanı: 12:00",
+      "fid": "0x14b97d25718271cf:0x9673a5a391e45d0d",
+      "placeUrl": "https://www.google.com/maps/place/Bornovada+Mant%C4%B1c%C4%B1+%7C+Ebruli+Mant%C4%B1/data=!4m7!3m6!1s0x14b97d25718271cf:0x9673a5a391e45d0d!8m2!3d38.4620336!4d27.2112029!16s%2Fg%2F11gm8rdp8m!19sChIJz3GCcSV9uRQRDV3kkaOlc5Y"
+    },
+    {
+      "name": "Vebaş",
+      "rating": 4.4,
+      "reviewCount": 820,
+      "info": "4,4(820) · ₺1–800 · Kafe · Açık · Kapanış saati: 00:00 · Kafe ·  · Açık · Kapanış saati: 00:00",
+      "fid": "0x14b97cf5635d7e33:0xebcc603bb46f97bf",
+      "placeUrl": "https://www.google.com/maps/place/Veba%C5%9F/data=!4m7!3m6!1s0x14b97cf5635d7e33:0xebcc603bb46f97bf!8m2!3d38.4823446!4d27.2419897!16s%2Fg%2F11clvwlm7k!19sChIJM35dY_V8uRQRv5dvtDtgzOs"
+    },
+    {
+      "name": "Burger’s Way Bornova",
+      "rating": 4.5,
+      "reviewCount": 386,
+      "info": "4,5(386) · ₺200–400 · Hamburger · 185. Sk. no:21/AKapalı · Açılış zamanı: 11:30 · Hamburger · 185. Sk. no:21/A · Kapalı · Açılış zamanı: 11:30",
+      "fid": "0x14b97d751e563a43:0x67ded4d6f1071955",
+      "placeUrl": "https://www.google.com/maps/place/Burger%E2%80%99s+Way+Bornova/data=!4m7!3m6!1s0x14b97d751e563a43:0x67ded4d6f1071955!8m2!3d38.4616282!4d27.2073696!16s%2Fg%2F11kb0yhtrw!19sChIJQzpWHnV9uRQRVRkH8dbU3mc"
+    },
+    {
+      "name": "MAMA MİA PİDE IZGARA BORNOVA",
+      "rating": 4.8,
+      "reviewCount": 16,
+      "info": "4,8(16) · ₺200–600 · Pideci · 219. SkAçık · Kapanış saati: 21:00 · Pideci · 219. Sk · Açık · Kapanış saati: 21:00",
+      "fid": "0x14b97d8862b3c87d:0xf3513ffcb5457f32",
+      "placeUrl": "https://www.google.com/maps/place/MAMA+M%C4%B0A+P%C4%B0DE+IZGARA+BORNOVA/data=!4m7!3m6!1s0x14b97d8862b3c87d:0xf3513ffcb5457f32!8m2!3d38.4589295!4d27.2033613!16s%2Fg%2F11ynx41mlp!19sChIJfcizYoh9uRQRMn9Ftfw_UfM"
+    },
+    {
+      "name": "Italian 1779 Bornova",
+      "rating": 4.2,
+      "reviewCount": 442,
+      "info": "4,2(442) · ₺800–2.000 · Restoran · Sanayi Cd. No: 29 VKapalı · Açılış zamanı: 12:00 · Restoran · Sanayi Cd. No: 29 V · Kapalı · Açılış zamanı: 12:00",
+      "fid": "0x14b963070e6e1bcf:0xe46f092e40fc260f",
+      "placeUrl": "https://www.google.com/maps/place/Italian+1779+Bornova/data=!4m7!3m6!1s0x14b963070e6e1bcf:0xe46f092e40fc260f!8m2!3d38.4513573!4d27.2019055!16s%2Fg%2F11xmxgll8b!19sChIJzxtuDgdjuRQRDyb8QC4Jb-Q"
+    },
+    {
+      "name": "Gandi'nin Yeri",
+      "rating": 4.3,
+      "reviewCount": 1370,
+      "info": "4,3(1.370) · ₺1.000+ · Restoran · Kazım Dirik Mah Yüzbaşı İbrahim Hakkı Caddesi No:179/A-183/AAçılmak üzere · 11:00 · Restoran · Kazım Dirik Mah Yüzbaşı İbrahim Hakkı Caddesi No:179/A-183/A · Açılmak",
+      "fid": "0x14b97d3b17af58af:0x181a7d50dbc17ca2",
+      "placeUrl": "https://www.google.com/maps/place/Gandi%27nin+Yeri/data=!4m7!3m6!1s0x14b97d3b17af58af:0x181a7d50dbc17ca2!8m2!3d38.4652073!4d27.2071594!16s%2Fg%2F1tl5_p66!19sChIJr1ivFzt9uRQRonzB21B9Ghg"
+    },
+    {
+      "name": "Sherwood Kafe Bar Restoran",
+      "rating": 4.3,
+      "reviewCount": 1019,
+      "info": "4,3(1.019) · ₺200–400 · Restoran · Süvari Cd. 59/AAçık · Kapanış saati: 02:00 · Restoran · Süvari Cd. 59/A · Açık · Kapanış saati: 02:00",
+      "fid": "0x14b97d2f764a53db:0x4a881c72a5d3c6a3",
+      "placeUrl": "https://www.google.com/maps/place/Sherwood+Kafe+Bar+Restoran/data=!4m7!3m6!1s0x14b97d2f764a53db:0x4a881c72a5d3c6a3!8m2!3d38.460517!4d27.21229!16s%2Fg%2F1hc2635g3!19sChIJ21NKdi99uRQRo8bTpXIciEo"
+    },
+    {
+      "name": "Tarık'ın Yeri",
+      "rating": 4.3,
+      "reviewCount": 272,
+      "info": "4,3(272) · ₺200–400 · Restoran · Kazımdirik Mahallesi 351. Sokak, 2, Sanayi Sitesi No:14Açık · Kapanış saati: 18:00 · Restoran · Kazımdirik Mahallesi 351. Sokak, 2, Sanayi Sitesi No:14 · Açık · Kapan",
+      "fid": "0x14b962b996044829:0xad9a3e1b6d297469",
+      "placeUrl": "https://www.google.com/maps/place/Tar%C4%B1k%27%C4%B1n+Yeri/data=!4m7!3m6!1s0x14b962b996044829:0xad9a3e1b6d297469!8m2!3d38.4448072!4d27.1925878!16s%2Fg%2F1tkp1_2n!19sChIJKUgElrliuRQRaXQpbRs-mq0"
+    },
+    {
+      "name": "SAMSUN PİDE EVİ",
+      "rating": 4.4,
+      "reviewCount": 969,
+      "info": "4,4(969) · ₺400–600 · Pideci ·  · 159. Sk. 33/AAçık · Kapanış saati: 22:00 · Pideci ·  · 159. Sk. 33/A · Açık · Kapanış saati: 22:00",
+      "fid": "0x14b97d24355fcb69:0x3d6255a7e36bbb1f",
+      "placeUrl": "https://www.google.com/maps/place/SAMSUN+P%C4%B0DE+EV%C4%B0/data=!4m7!3m6!1s0x14b97d24355fcb69:0x3d6255a7e36bbb1f!8m2!3d38.4633752!4d27.2130576!16s%2Fg%2F1td44p14!19sChIJactfNSR9uRQRH7tr46dVYj0"
+    },
+    {
+      "name": "Pizza Rucola Bornova",
+      "rating": 4.7,
+      "reviewCount": 288,
+      "info": "4,7(288) · ₺400–600 · Pizza ·  · Galata Rezidans, Sanayi Cd. No:29 D:EAçılmak üzere · 11:00 · Pizza ·  · Galata Rezidans, Sanayi Cd. No:29 D:E · Açılmak üzere · 11:00",
+      "fid": "0x14b963d62eb84757:0x4767119197cc40f",
+      "placeUrl": "https://www.google.com/maps/place/Pizza+Rucola+Bornova/data=!4m7!3m6!1s0x14b963d62eb84757:0x4767119197cc40f!8m2!3d38.4518161!4d27.2013875!16s%2Fg%2F11kj3zfqrg!19sChIJV0e4LtZjuRQRD8R8GRlxdgQ"
+    },
+    {
+      "name": "Kipos Kitchen",
+      "rating": 4.3,
+      "reviewCount": 74,
+      "info": "4,3(74) · ₺100–200 · Kafe ·  · 58. Sk. No:1AAçık · Kapanış saati: 22:00 · Kafe ·  · 58. Sk. No:1A · Açık · Kapanış saati: 22:00",
+      "fid": "0x14b97cdeff667ea3:0x657a80e46fe141b5",
+      "placeUrl": "https://www.google.com/maps/place/Kipos+Kitchen/data=!4m7!3m6!1s0x14b97cdeff667ea3:0x657a80e46fe141b5!8m2!3d38.465363!4d27.223733!16s%2Fg%2F11b7c76y6r!19sChIJo35m_958uRQRtUHhb-SAemU"
+    },
+    {
+      "name": "Mezopotamya Lokantası",
+      "rating": 4.1,
+      "reviewCount": 329,
+      "info": "4,1(329) · ₺400–600 · Restoran ·  · 538. Sk. No:24Açık · Kapanış saati: 21:00 · Restoran ·  · 538. Sk. No:24 · Açık · Kapanış saati: 21:00",
+      "fid": "0x14b97d20444242ff:0x8280a6a5c0597d07",
+      "placeUrl": "https://www.google.com/maps/place/Mezopotamya+Lokantas%C4%B1/data=!4m7!3m6!1s0x14b97d20444242ff:0x8280a6a5c0597d07!8m2!3d38.4671604!4d27.2189003!16s%2Fg%2F1wfp623p!19sChIJ_0JCRCB9uRQRB31ZwKWmgII"
+    },
+    {
+      "name": "Ustam Kokoreç",
+      "rating": 4.3,
+      "reviewCount": 1146,
+      "info": "4,3(1.146) · ₺400–600 · Sakatat Barbekü Restoranı ·  · Mustafa Kemal Cd. No:114AAçık · Kapanış saati: 04:00 · Sakatat Barbekü Restoranı ·  · Mustafa Kemal Cd. No:114A · Açık · Kapanış saati: 04:00",
+      "fid": "0x14b97d309286782d:0x5bf6fea9cb1adbb6",
+      "placeUrl": "https://www.google.com/maps/place/Ustam+Kokore%C3%A7/data=!4m7!3m6!1s0x14b97d309286782d:0x5bf6fea9cb1adbb6!8m2!3d38.4617524!4d27.2050109!16s%2Fg%2F11c180mv7g!19sChIJLXiGkjB9uRQRttsay6n-9ls"
+    },
+    {
+      "name": "İzmirim Ev Yemekleri",
+      "rating": 4.9,
+      "reviewCount": 29,
+      "info": "4,9(29) · ₺100–200 · Restoran · Çolakoğlu İşhanı, 541. Sk. No:13Açık · Kapanış saati: 20:00 · Restoran · Çolakoğlu İşhanı, 541. Sk. No:13 · Açık · Kapanış saati: 20:00",
+      "fid": "0x14b97dce62c21fdf:0x22d8fa02951c028e",
+      "placeUrl": "https://www.google.com/maps/place/%C4%B0zmirim+Ev+Yemekleri/data=!4m7!3m6!1s0x14b97dce62c21fdf:0x22d8fa02951c028e!8m2!3d38.4666065!4d27.218595!16s%2Fg%2F11ldxplt9m!19sChIJ3x_CYs59uRQRjgIclQL62CI"
+    },
+    {
+      "name": "Proof Breakfast Bornova",
+      "rating": 4,
+      "reviewCount": 1184,
+      "info": "4,0(1.184) · ₺400–800 · Kahvaltı ·  · Fevzi Çakmak Cd. no:49Açık · Kapanış saati: 16:00 · Kahvaltı ·  · Fevzi Çakmak Cd. no:49 · Açık · Kapanış saati: 16:00",
+      "fid": "0x14bbd903ea07890d:0x9707d29a0d17b0bb",
+      "placeUrl": "https://www.google.com/maps/place/Proof+Breakfast+Bornova/data=!4m7!3m6!1s0x14bbd903ea07890d:0x9707d29a0d17b0bb!8m2!3d38.459483!4d27.216606!16s%2Fg%2F11frsy1md2!19sChIJDYkH6gPZuxQRu7AXDZrSB5c"
+    },
+    {
+      "name": "Sanres Kahvaltı ve Ev Yemekleri",
+      "rating": 4.2,
+      "reviewCount": 154,
+      "info": "4,2(154) · ₺200–400 · Kahvaltı ·  · Karacaoğlan Mahallesi, Bornova Caddesi, 6172 Sk İzeltaş Galeria İş Merkezi No: 7/2EAçık · Kapanış saati: 16:30 · Kahvaltı ·  · Karacaoğlan Mahallesi, Bornova Cad",
+      "fid": "0x14b96326640c4e95:0x8097c255c4ea48b3",
+      "placeUrl": "https://www.google.com/maps/place/Sanres+Kahvalt%C4%B1+ve+Ev+Yemekleri/data=!4m7!3m6!1s0x14b96326640c4e95:0x8097c255c4ea48b3!8m2!3d38.436181!4d27.225432!16s%2Fg%2F11b8ygfj_0!19sChIJlU4MZCZjuRQRs0jqxFXCl4A"
+    },
+    {
+      "name": "Amigo Kahvaltıevi Çiçekliköy",
+      "rating": 4.4,
+      "reviewCount": 438,
+      "info": "4,4(438) · ₺800–1.000 · Kahvaltı ·  · Çiçekli Mahallesi Çiçekli Caddesi no:36 Çiçekliköy, Çiçekli Cd. No:36Açık · Kapanış saati: 18:00 · Kahvaltı ·  · Çiçekli Mahallesi Çiçekli Caddesi no:36 Çiçekl",
+      "fid": "0x14b97b567e86c159:0xd77dc81b39967fae",
+      "placeUrl": "https://www.google.com/maps/place/Amigo+Kahvalt%C4%B1evi+%C3%87i%C3%A7eklik%C3%B6y/data=!4m7!3m6!1s0x14b97b567e86c159:0xd77dc81b39967fae!8m2!3d38.4988355!4d27.2860012!16s%2Fg%2F11gjjhd_09!19sChIJWcGGflZ7uRQRrn-WORvIfdc"
+    },
+    {
+      "name": "EFE Pilavcısı",
+      "rating": 4.8,
+      "reviewCount": 166,
+      "info": "4,8(166) · ₺1–200 · Pilav Restoranı ·  · 367. Sk.Açık · Kapanış saati: 23:00 · Pilav Restoranı ·  · 367. Sk. · Açık · Kapanış saati: 23:00",
+      "fid": "0x14b96300061de169:0x7cdf521dd5f1ac7e",
+      "placeUrl": "https://www.google.com/maps/place/EFE+Pilavc%C4%B1s%C4%B1/data=!4m7!3m6!1s0x14b96300061de169:0x7cdf521dd5f1ac7e!8m2!3d38.4503432!4d27.2024068!16s%2Fg%2F11wwr0g8x5!19sChIJaeEdBgBjuRQRfqzx1R1S33w"
+    },
+    {
+      "name": "Lezize Ev Yemekleri",
+      "rating": 4.6,
+      "reviewCount": 53,
+      "info": "4,6(53) · ₺200–300 · Restoran · 153. Sk. No:7Açık · Kapanış saati: 18:00 · Restoran · 153. Sk. No:7 · Açık · Kapanış saati: 18:00",
+      "fid": "0x14b97d26bbc40163:0x7ab53d4806d87c19",
+      "placeUrl": "https://www.google.com/maps/place/Lezize+Ev+Yemekleri/data=!4m7!3m6!1s0x14b97d26bbc40163:0x7ab53d4806d87c19!8m2!3d38.4641407!4d27.2161498!16s%2Fg%2F1tl6n3bj!19sChIJYwHEuyZ9uRQRGXzYBkg9tXo"
+    },
+    {
+      "name": "Bornova Askeri Gazinosu",
+      "rating": 4.3,
+      "reviewCount": 550,
+      "info": "4,3(550) · ₺1–400 · Aileye uygun · ",
+      "fid": "0x14b97da7df76dcd3:0x95c5fcd24ffe134c",
+      "placeUrl": "https://www.google.com/maps/place/Bornova+Askeri+Gazinosu/data=!4m7!3m6!1s0x14b97da7df76dcd3:0x95c5fcd24ffe134c!8m2!3d38.4603494!4d27.2153447!16s%2Fg%2F11shqgg98v!19sChIJ09x236d9uRQRTBP-T9L8xZU"
+    },
+    {
+      "name": "Özlem Lokantası",
+      "rating": 4.4,
+      "reviewCount": 252,
+      "info": "4,4(252) · ₺400–600 · Restoran · Evka 3 Mahallesi 129/5 Sk. No:F/2, 4.Sanayi SitesiAçık · Kapanış saati: 17:00 · Restoran · Evka 3 Mahallesi 129/5 Sk. No:F/2, 4.Sanayi Sitesi · Açık · Kapanış saati: ",
+      "fid": "0x14b97c962219e159:0xae1c3633b4f2ac58",
+      "placeUrl": "https://www.google.com/maps/place/%C3%96zlem+Lokantas%C4%B1/data=!4m7!3m6!1s0x14b97c962219e159:0xae1c3633b4f2ac58!8m2!3d38.4611389!4d27.2514579!16s%2Fg%2F1v86g_w9!19sChIJWeEZIpZ8uRQRWKzytDM2HK4"
+    },
+    {
+      "name": "Kebap 74",
+      "rating": 4.4,
+      "reviewCount": 97,
+      "info": "4,4(97) · ₺200–300 · Kebap Restoranı ·  · 1. Sk. No:4CAçık · Kapanış saati: 21:00 · Kebap Restoranı ·  · 1. Sk. No:4C · Açık · Kapanış saati: 21:00",
+      "fid": "0x14b97d207c44d92b:0x735f458d642ab14c",
+      "placeUrl": "https://www.google.com/maps/place/Kebap+74/data=!4m7!3m6!1s0x14b97d207c44d92b:0x735f458d642ab14c!8m2!3d38.4664288!4d27.2200686!16s%2Fg%2F11b7q7jfl2!19sChIJK9lEfCB9uRQRTLEqZI1FX3M"
+    }
+  ]
+}

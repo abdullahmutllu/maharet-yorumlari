@@ -9,6 +9,7 @@ const els = {
   status: document.getElementById("status"),
   city: document.getElementById("city"),
   cityBtn: document.getElementById("city-btn"),
+  saved: document.getElementById("saved"),
   controls: document.getElementById("controls"),
   filter: document.getElementById("filter"),
   sort: document.getElementById("sort"),
@@ -190,10 +191,44 @@ async function exportData(fmt) {
   }
 }
 
+// ---------- Kayıtlı dizinler ----------
+async function loadSavedList() {
+  let list = [];
+  try {
+    const r = await fetch("/api/places-list");
+    if (r.ok) list = await r.json();
+  } catch {}
+  if (!list.length) {
+    try { const r2 = await fetch("./places-index.json"); if (r2.ok) list = await r2.json(); } catch {}
+  }
+  if (!list.length) { els.saved.innerHTML = ""; return; }
+  els.saved.innerHTML =
+    '<span class="muted">Kayıtlı dizinler:</span> ' +
+    list.map((d) => `<button type="button" class="chip" data-slug="${d.slug}">${d.query} (${d.count})</button>`).join(" ");
+}
+
+async function loadSaved(slug) {
+  els.status.textContent = "Yükleniyor…";
+  let data = null;
+  try {
+    const r = await fetch("/api/places?slug=" + encodeURIComponent(slug));
+    if (r.ok) data = await r.json();
+  } catch {}
+  if (!data) { try { const r2 = await fetch(`./places-${slug}.json`); if (r2.ok) data = await r2.json(); } catch {} }
+  if (!data) { els.status.textContent = "Dizin yüklenemedi."; return; }
+  state.places = data.places || [];
+  state.query = data.query || slug;
+  els.status.textContent = `${state.places.length} işletme yüklendi.`;
+  render();
+}
+
 // ---------- Olaylar ----------
+els.saved.addEventListener("click", (e) => { const b = e.target.closest("button[data-slug]"); if (b) loadSaved(b.dataset.slug); });
 els.form.addEventListener("submit", (e) => { e.preventDefault(); const q = els.q.value.trim(); if (q) discover(q); });
 els.cityBtn.addEventListener("click", () => { const c = els.city.value.trim(); if (c) scanCity(c); else els.status.textContent = "Şehir yaz (ör. Ankara)."; });
 els.filter.addEventListener("input", (e) => { state.filter = e.target.value; render(); });
 els.sort.addEventListener("change", (e) => { state.sort = e.target.value; render(); });
 els.exportEl.addEventListener("click", (e) => { const b = e.target.closest("button[data-fmt]"); if (b) exportData(b.dataset.fmt); });
 els.rows.addEventListener("click", (e) => { const b = e.target.closest("button.collect"); if (b) collect(b); });
+
+loadSavedList();

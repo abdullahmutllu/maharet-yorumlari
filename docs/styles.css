@@ -501,6 +501,18 @@ h1 {
   margin-bottom: 4px;
 }
 
+.saved-dirs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.saved-dirs:empty {
+  display: none;
+}
+
 /* ---------- Dizin tablosu (Keşfet) ---------- */
 .table-wrap {
   overflow-x: auto;

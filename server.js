@@ -2,7 +2,7 @@
 // dinamik şube ekleme + Google giriş (gerçek Chrome + CDP ile tam kapsam).
 
 import express from "express";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { PORT } from "./config.js";
@@ -123,6 +123,24 @@ app.post("/api/discover-city", async (req, res) => {
       res.status(500).json({ error: "Şehir taraması başarısız", detail: String(err?.message || err) });
     }
   });
+});
+
+// Kaydedilmiş dizinlerin listesi
+app.get("/api/places-list", async (_req, res) => {
+  try {
+    const files = (await readdir(join(__dirname, "data"))).filter((f) => /^places-.+\.json$/.test(f));
+    const list = [];
+    for (const f of files) {
+      try {
+        const d = JSON.parse(await readFile(join(__dirname, "data", f), "utf8"));
+        list.push({ slug: d.slug, query: d.query, count: d.count, scrapedAt: d.scrapedAt });
+      } catch {}
+    }
+    list.sort((a, b) => (b.count || 0) - (a.count || 0));
+    res.json(list);
+  } catch {
+    res.json([]);
+  }
 });
 
 // Kaydedilmiş bir dizini getir

@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "ankara-restoran-tum-ilceler",
+    "query": "ankara restoran (tüm ilçeler)",
+    "count": 1021,
+    "scrapedAt": "2026-06-26T08:19:10.263Z"
+  },
+  {
+    "slug": "bornova-restoran",
+    "query": "Bornova restoran",
+    "count": 49,
+    "scrapedAt": "2026-06-26T07:32:42.784Z"
+  }
+]

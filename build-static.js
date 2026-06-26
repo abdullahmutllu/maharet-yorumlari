@@ -41,7 +41,21 @@ for (const b of BRANCHES) {
 // şube manifesti (frontend statik modda bunu okur)
 await writeFile(join(DOCS, "branches.json"), JSON.stringify(manifest, null, 2), "utf8");
 
+// Keşfet dizinleri: data/places-*.json -> docs/ + places-index.json
+const { readdir } = await import("node:fs/promises");
+let placesIndex = [];
+try {
+  const files = (await readdir(DATA)).filter((f) => /^places-.+\.json$/.test(f));
+  for (const f of files) {
+    const raw = await readFile(join(DATA, f), "utf8");
+    await writeFile(join(DOCS, f), raw, "utf8");
+    try { const d = JSON.parse(raw); placesIndex.push({ slug: d.slug, query: d.query, count: d.count, scrapedAt: d.scrapedAt }); } catch {}
+  }
+  placesIndex.sort((a, b) => (b.count || 0) - (a.count || 0));
+} catch {}
+await writeFile(join(DOCS, "places-index.json"), JSON.stringify(placesIndex, null, 2), "utf8");
+
 // Jekyll işlemesini kapat
 await writeFile(join(DOCS, ".nojekyll"), "", "utf8");
 
-console.log(`Statik build hazır: docs/ (${manifest.length} şube)`);
+console.log(`Statik build hazır: docs/ (${manifest.length} şube, ${placesIndex.length} dizin)`);
