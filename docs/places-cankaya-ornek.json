@@ -1,0 +1,88 @@
+{
+  "query": "Çankaya örnek (10 restoran)",
+  "slug": "cankaya-ornek",
+  "scrapedAt": "2026-06-26T10:51:05.735Z",
+  "count": 10,
+  "places": [
+    {
+      "name": "Lou Cafe Bistro - Maidan",
+      "rating": 3.8,
+      "reviewCount": 698,
+      "info": "Kafe ·  · 4/A Mustafa Kemal Mah 2118.Cad. Maidan AvmAçık · Kapanış saati: 00:00 · Kafe ·  · 4/A Mustafa Kemal Mah 2118.Cad. Maidan Avm · Açık · Kapanış saati: 00:00",
+      "fid": "0x14d3475e2f4c5d79:0x342b6b9497437f42",
+      "placeUrl": "https://www.google.com/maps/place/Lou+Cafe+Bistro+-+Maidan/data=!4m7!3m6!1s0x14d3475e2f4c5d79:0x342b6b9497437f42!8m2!3d39.9094718!4d32.7642972!16s%2Fg%2F11f67gz_b1!19sChIJeV1ML15H0xQRQn9Dl5RrKzQ"
+    },
+    {
+      "name": "Cümcük Restoran",
+      "rating": 4.5,
+      "reviewCount": 697,
+      "info": "Restoran ·  · 435. Cd. No:49Açık · Kapanış saati: 20:30 · Restoran ·  · 435. Cd. No:49 · Açık · Kapanış saati: 20:30",
+      "fid": "0x14d345d955810d9f:0x3ece396c4b1e35a",
+      "placeUrl": "https://www.google.com/maps/place/C%C3%BCmc%C3%BCk+Restoran/data=!4m7!3m6!1s0x14d345d955810d9f:0x3ece396c4b1e35a!8m2!3d39.8770895!4d32.875309!16s%2Fg%2F11h02ch9nb!19sChIJnw2BVdlF0xQRWuOxxJbj7AM"
+    },
+    {
+      "name": "Hamburg",
+      "rating": 4.1,
+      "reviewCount": 685,
+      "info": "Fast Food ·  · Cemal Gürsel Cad. NO: 39/BAçık · Kapanış saati: 02:00 · Fast Food ·  · Cemal Gürsel Cad. NO: 39/B · Açık · Kapanış saati: 02:00",
+      "fid": "0x14d34f1337d4721b:0x64c590c9b40ee22c",
+      "placeUrl": "https://www.google.com/maps/place/Hamburg/data=!4m7!3m6!1s0x14d34f1337d4721b:0x64c590c9b40ee22c!8m2!3d39.929558!4d32.871832!16s%2Fg%2F11hz0k1d29!19sChIJG3LUNxNP0xQRLOIOtMmQxWQ"
+    },
+    {
+      "name": "Mercan Balık",
+      "rating": 3.7,
+      "reviewCount": 668,
+      "info": "Balık Restoranı ·  · Aşkabat Cd. No:18Açık · Kapanış saati: 21:30 · Balık Restoranı ·  · Aşkabat Cd. No:18 · Açık · Kapanış saati: 21:30",
+      "fid": "0x14d34f2364bc42ef:0x22eb0ab632c9f6f2",
+      "placeUrl": "https://www.google.com/maps/place/Mercan+Bal%C4%B1k/data=!4m7!3m6!1s0x14d34f2364bc42ef:0x22eb0ab632c9f6f2!8m2!3d39.9232893!4d32.8257402!16s%2Fg%2F113gp81j8!19sChIJ70K8ZCNP0xQR8vbJMrYK6yI"
+    },
+    {
+      "name": "Kuzeydoğu Cağ Kebap",
+      "rating": 4.7,
+      "reviewCount": 667,
+      "info": "Restoran · No: 3A Veysel Karani BulvarıAçık · Kapanış saati: 22:00 · Restoran · No: 3A Veysel Karani Bulvarı · Açık · Kapanış saati: 22:00",
+      "fid": "0x14d337f7bd2a517b:0x5b6b372f390b9591",
+      "placeUrl": "https://www.google.com/maps/place/Kuzeydo%C4%9Fu+Ca%C4%9F+Kebap/data=!4m7!3m6!1s0x14d337f7bd2a517b:0x5b6b372f390b9591!8m2!3d39.988172!4d32.690341!16s%2Fg%2F11vdhk5l7g!19sChIJe1Eqvfc30xQRkZULOS83a1s"
+    },
+    {
+      "name": "Zoka Rakı&Balık",
+      "rating": 4.2,
+      "reviewCount": 665,
+      "info": "Restoran · 2432. Caddesi 43 BAçık · Kapanış saati: 01:00 · Restoran · 2432. Caddesi 43 B · Açık · Kapanış saati: 01:00",
+      "fid": "0x14d3389340bd7c05:0xfb918be87d595531",
+      "placeUrl": "https://www.google.com/maps/place/Zoka+Rak%C4%B1%26Bal%C4%B1k/data=!4m7!3m6!1s0x14d3389340bd7c05:0xfb918be87d595531!8m2!3d39.8852778!4d32.6966667!16s%2Fg%2F1hhm60sfw!19sChIJBXy9QJM40xQRMVVZfeiLkfs"
+    },
+    {
+      "name": "Hamzaoğlu Akçaabat Köfte & Balık & Kahvaltı Salonu",
+      "rating": 4.6,
+      "reviewCount": 655,
+      "info": "Restoran ·  · MEŞRUTİYET MAH SELANİK CAD NO 50:A/BAçık · Kapanış saati: 01:00 · Restoran ·  · MEŞRUTİYET MAH SELANİK CAD NO 50:A/B · Açık · Kapanış saati: 01:00",
+      "fid": "0x14d34f0530ec1e2d:0x286209efa9727457",
+      "placeUrl": "https://www.google.com/maps/place/Hamzao%C4%9Flu+Ak%C3%A7aabat+K%C3%B6fte+%26+Bal%C4%B1k+%26+Kahvalt%C4%B1+Salonu/data=!4m7!3m6!1s0x14d34f0530ec1e2d:0x286209efa9727457!8m2!3d39.9187352!4d32.8569551!16s%2Fg%2F11j7xq1jyy!19sChIJLR7sMAVP0xQRV3Ryqe8JYig"
+    },
+    {
+      "name": "Pizzeria Alla Torre",
+      "rating": 4.3,
+      "reviewCount": 654,
+      "info": "Pizza ·  · Pizzeria Alla Torre Atakule Alışveriş Merkezi Botanik KatıAçık · Kapanış saati: 22:00 · Pizza ·  · Pizzeria Alla Torre Atakule Alışveriş Merkezi Botanik Katı · Açık · Kapanış saati: 22:00",
+      "fid": "0x14d34f0530464da5:0x5e4c533386e98181",
+      "placeUrl": "https://www.google.com/maps/place/Pizzeria+Alla+Torre/data=!4m7!3m6!1s0x14d34f0530464da5:0x5e4c533386e98181!8m2!3d39.8861778!4d32.8562404!16s%2Fg%2F11rnbzqyqv!19sChIJpU1GMAVP0xQRgYHphjNTTF4"
+    },
+    {
+      "name": "Karafaki",
+      "rating": 4.2,
+      "reviewCount": 653,
+      "info": "Restoran · Açık · Kapanış saati: 01:00 · Restoran ·  · Açık · Kapanış saati: 01:00",
+      "fid": "0x14d3462b5d1fa0df:0xfebcd9b9961ab4a",
+      "placeUrl": "https://www.google.com/maps/place/Karafaki/data=!4m7!3m6!1s0x14d3462b5d1fa0df:0xfebcd9b9961ab4a!8m2!3d39.9091195!4d32.7643737!16s%2Fg%2F11f4vmb370!19sChIJ36AfXStG0xQRSqthmZvN6w8"
+    },
+    {
+      "name": "Pidas",
+      "rating": 4.5,
+      "reviewCount": 649,
+      "info": "Restoran ·  · Ceyhun Atuf Kansu Cd. No:92/BGeçici olarak kapalı · Restoran ·  · Ceyhun Atuf Kansu Cd. No:92/B · Geçici olarak kapalı",
+      "fid": "0x14d34f0d01569075:0x15414caed1e31c98",
+      "placeUrl": "https://www.google.com/maps/place/Pidas/data=!4m7!3m6!1s0x14d34f0d01569075:0x15414caed1e31c98!8m2!3d39.8985631!4d32.817317!16s%2Fg%2F11sf7shj2z!19sChIJdZBWAQ1P0xQRmBzj0a5MQRU"
+    }
+  ]
+}

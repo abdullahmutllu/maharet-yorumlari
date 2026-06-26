@@ -16,7 +16,7 @@ const DATA = join(__dirname, "data");
 await mkdir(DOCS, { recursive: true });
 
 // statik frontend
-for (const f of ["index.html", "app.js", "styles.css", "kesfet.html", "kesfet.js"]) {
+for (const f of ["index.html", "app.js", "styles.css", "kesfet.html", "kesfet.js", "cankaya.html", "cankaya.js"]) {
   await copyFile(join(__dirname, "public", f), join(DOCS, f));
 }
 
@@ -54,6 +54,33 @@ try {
   placesIndex.sort((a, b) => (b.count || 0) - (a.count || 0));
 } catch {}
 await writeFile(join(DOCS, "places-index.json"), JSON.stringify(placesIndex, null, 2), "utf8");
+
+// Toplu yorum veri setleri: data/<dataset>/*.json -> docs/<dataset>/ + <dataset>-manifest.json
+// + birleşik CSV/JSON varsa kopyala. (Şimdilik cankaya-ornek)
+const { mkdir: mkdirp } = await import("node:fs/promises");
+for (const dataset of ["cankaya-ornek"]) {
+  try {
+    const srcDir = join(DATA, dataset);
+    const outDir = join(DOCS, dataset);
+    await mkdirp(outDir, { recursive: true });
+    const rfiles = (await readdir(srcDir)).filter((f) => f.endsWith(".json") && f !== "_index.json");
+    const man = [];
+    for (const f of rfiles) {
+      const raw = await readFile(join(srcDir, f), "utf8");
+      const d = JSON.parse(raw);
+      if (!d.count) continue; // boş restoranı atla
+      await writeFile(join(outDir, f), raw, "utf8");
+      man.push({ slug: f.replace(/\.json$/, ""), label: d.business, count: d.count, averageRating: d.averageRating });
+    }
+    man.sort((a, b) => (b.count || 0) - (a.count || 0));
+    await writeFile(join(DOCS, `${dataset}-manifest.json`), JSON.stringify(man, null, 2), "utf8");
+    // birleşik indirilebilir dosyalar
+    for (const ext of ["json", "csv"]) {
+      try { await copyFile(join(DATA, `${dataset}-combined.${ext}`), join(DOCS, `${dataset}-combined.${ext}`)); } catch {}
+    }
+    console.log(`Veri seti yayınlandı: ${dataset} (${man.length} restoran)`);
+  } catch {}
+}
 
 // Jekyll işlemesini kapat
 await writeFile(join(DOCS, ".nojekyll"), "", "utf8");

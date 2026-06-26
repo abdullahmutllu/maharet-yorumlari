@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maharet Mantı — Google Yorumları</title>
+    <title>Çankaya Restoran Yorumları — Veri Seti</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,8 +15,8 @@
   <body>
     <header class="hero">
       <div class="hero-inner">
-        <p class="eyebrow">Google Maps Yorumları · <a href="kesfet.html">İşletme dizini keşfet</a> · <a href="cankaya.html">Çankaya veri seti →</a></p>
-        <h1 id="business-name">Maharet Mantı &amp; Kayseri Yağlaması</h1>
+        <p class="eyebrow">Veri Seti · <a href="index.html">Maharet Yorumlar</a> · <a href="kesfet.html">Keşfet</a></p>
+        <h1>Çankaya Restoran Yorumları</h1>
 
         <div class="summary" id="summary">
           <div class="summary-score">
@@ -28,49 +28,21 @@
           </div>
           <div class="summary-meta">
             <label class="branch-pick">
-              <span class="muted">Şube:</span>
-              <select id="branch-select" aria-label="Şube seçin"></select>
+              <span class="muted">Restoran:</span>
+              <select id="rest-select" aria-label="Restoran seçin"></select>
             </label>
-            <span class="muted" id="scraped-at"></span>
-            <span class="login-state muted" id="login-status"></span>
-            <button id="login-btn" class="btn btn-ghost" type="button">
-              <span class="btn-label">Google ile giriş</span>
-            </button>
-            <button id="refresh-btn" class="btn" type="button">
-              <span class="btn-label">Yenile</span>
-            </button>
           </div>
         </div>
 
-        <div class="rating-dist" id="rating-dist" aria-label="Puan dağılımı"></div>
+        <div class="rating-dist" id="rating-dist"></div>
 
-        <form id="add-branch" class="add-branch" autocomplete="off">
-          <input
-            type="url"
-            id="add-url"
-            class="add-url"
-            placeholder="Google Haritalar işletme linki yapıştır → yorumları topla"
-            required
-          />
-          <input type="text" id="add-label" class="add-label" placeholder="Etiket (opsiyonel)" />
-          <button type="submit" class="btn" id="add-btn">
-            <span class="btn-label">Topla</span>
-          </button>
-          <span class="muted add-status" id="add-status"></span>
-        </form>
+        <p class="muted" id="dataset-info" style="margin: 14px 0 0"></p>
       </div>
     </header>
 
     <main class="container">
       <section class="controls" id="controls">
-        <input
-          type="search"
-          id="search"
-          class="search"
-          placeholder="Yorumlarda ara (metin veya kişi adı)…"
-          autocomplete="off"
-        />
-
+        <input type="search" id="search" class="search" placeholder="Yorumlarda ara (metin / kişi)…" autocomplete="off" />
         <div class="filters" id="rating-filters" role="group" aria-label="Puana göre filtrele">
           <button class="chip is-active" data-rating="all" type="button">Tümü</button>
           <button class="chip" data-rating="5" type="button">5 ★</button>
@@ -79,14 +51,12 @@
           <button class="chip" data-rating="2" type="button">2 ★</button>
           <button class="chip" data-rating="1" type="button">1 ★</button>
         </div>
-
         <div class="export" id="export">
           <span class="muted">İndir:</span>
           <button type="button" class="chip" data-fmt="csv">CSV</button>
           <button type="button" class="chip" data-fmt="xlsx">Excel</button>
           <button type="button" class="chip" data-fmt="json">JSON</button>
         </div>
-
         <label class="sort">
           <span class="muted">Sırala:</span>
           <select id="sort">
@@ -94,29 +64,24 @@
             <option value="oldest">En eski</option>
             <option value="highest">En yüksek puan</option>
             <option value="lowest">En düşük puan</option>
+            <option value="author">Yazarın yorum sayısı</option>
           </select>
         </label>
       </section>
 
       <p class="result-count muted" id="result-count"></p>
-
       <section id="reviews" class="reviews" aria-live="polite"></section>
-
-      <div id="empty" class="empty hidden">
-        <p>Henüz yorum yok.</p>
-        <p class="muted">
-          Terminalde <code>npm run scrape</code> çalıştır ya da yukarıdaki
-          <strong>Yenile</strong> butonuna bas.
-        </p>
-      </div>
     </main>
 
     <footer class="footer">
       <p class="muted">
-        Veriler Google Maps'ten çekilmiştir. Yalnızca görüntüleme amaçlıdır.
+        Tüm veri seti:
+        <a id="dl-csv" href="cankaya-ornek-combined.csv" download>birleşik CSV</a> ·
+        <a id="dl-json" href="cankaya-ornek-combined.json" download>birleşik JSON</a>.
+        Veriler Google Maps'ten; yalnızca görüntüleme amaçlı.
       </p>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="cankaya.js"></script>
   </body>
 </html>

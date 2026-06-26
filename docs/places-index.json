@@ -16,5 +16,11 @@
     "query": "Bornova restoran",
     "count": 49,
     "scrapedAt": "2026-06-26T07:32:42.784Z"
+  },
+  {
+    "slug": "cankaya-ornek",
+    "query": "Çankaya örnek (10 restoran)",
+    "count": 10,
+    "scrapedAt": "2026-06-26T10:51:05.735Z"
   }
 ]

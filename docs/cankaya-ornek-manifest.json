@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "lou-cafe-bistro-maidan-437f42",
+    "label": "Lou Cafe Bistro - Maidan",
+    "count": 698,
+    "averageRating": 3.84
+  },
+  {
+    "slug": "cumcuk-restoran-b1e35a",
+    "label": "Cümcük Restoran",
+    "count": 697,
+    "averageRating": 4.46
+  },
+  {
+    "slug": "kuzeydogu-cag-kebap-0b9591",
+    "label": "Kuzeydoğu Cağ Kebap",
+    "count": 669,
+    "averageRating": 4.72
+  },
+  {
+    "slug": "mercan-balik-c9f6f2",
+    "label": "Mercan Balık",
+    "count": 668,
+    "averageRating": 3.72
+  },
+  {
+    "slug": "zoka-raki-balik-595531",
+    "label": "Zoka Rakı&Balık",
+    "count": 665,
+    "averageRating": 4.24
+  },
+  {
+    "slug": "hamzaoglu-akcaabat-kofte-balik-kahvalti--727457",
+    "label": "Hamzaoğlu Akçaabat Köfte & Balık & Kahvaltı Salonu",
+    "count": 655,
+    "averageRating": 4.62
+  },
+  {
+    "slug": "pizzeria-alla-torre-e98181",
+    "label": "Pizzeria Alla Torre",
+    "count": 654,
+    "averageRating": 4.29
+  },
+  {
+    "slug": "karafaki-61ab4a",
+    "label": "Karafaki",
+    "count": 653,
+    "averageRating": 4.2
+  },
+  {
+    "slug": "pidas-e31c98",
+    "label": "Pidas",
+    "count": 649,
+    "averageRating": 4.49
+  }
+]
