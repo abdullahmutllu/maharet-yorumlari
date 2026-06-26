@@ -367,6 +367,39 @@ export async function runScrape(
       }
     };
 
+    // Anahtar kelime geçişi: yorum-içi aramaya terim yazılır (sunucu-taraflı filtre,
+    // KAYDIRMA TAVANINDAN BAĞIMSIZ ayrı sonuç kümesi) ve sona kadar kaydırılır.
+    const runKeywordPass = async (term, idx) => {
+      await sleep(idx * 1500);
+      const page = await context.newPage();
+      try {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
+        await sleep(3500);
+        await dismissConsent(page);
+        await clickReviewsTab(page);
+        await page.evaluate(pageSetup);
+        let input = page.locator("input.yBHhWb");
+        if (!(await input.count().catch(() => 0))) {
+          // magnifier'ı açmayı dene
+          const ara = page.locator('[role="main"] button[aria-label="Ara"]');
+          if (await ara.count().catch(() => 0)) { await ara.first().click().catch(() => {}); await sleep(800); }
+          input = page.locator("input.yBHhWb");
+        }
+        if (!(await input.count().catch(() => 0))) return [];
+        await input.first().click().catch(() => {});
+        await input.first().fill(term).catch(() => {});
+        await page.keyboard.press("Enter").catch(() => {});
+        await sleep(2800);
+        await scrollToEnd(page, { label: `ara:${term}`, maxScrolls });
+        return await page.evaluate(() => window.__dump());
+      } catch (e) {
+        console.warn(`[ara:${term}] hata: ${e.message}`);
+        return [];
+      } finally {
+        await page.close().catch(() => {});
+      }
+    };
+
     // 2) TUR DÖNGÜSÜ: Google oturumsuz her seferinde biraz farklı alt küme sunduğundan,
     //    hedefe (Google toplamı) ulaşana ya da doygunluğa (yeni yorum gelmemesi) kadar
     //    4 sıralamayı PARALEL tekrar tekrar çalıştırıp birleştiriyoruz.
@@ -389,6 +422,31 @@ export async function runScrape(
         }
       } else {
         dryStreak = 0;
+      }
+    }
+
+    // 3) ANAHTAR KELİME AUGMENTASYONU: kaydırma tavanını aşmak için yorum-içi aramayı
+    //    çok sayıda yaygın Türkçe kelimeyle çalıştır. Her arama, tavandan bağımsız ayrı
+    //    bir sonuç kümesi döndürür; birleşimi metinli yorumların büyük kısmını yakalar.
+    const KEYWORDS = [
+      "lezzet", "lezzetli", "güzel", "tavsiye", "servis", "porsiyon", "fiyat", "temiz",
+      "mantı", "yağlama", "tatlı", "çorba", "sıcak", "personel", "mekan", "hızlı", "taze",
+      "kötü", "harika", "mükemmel", "gittik", "yedik", "sipariş", "kayseri", "peynir",
+      "yemek", "tat", "keyifli", "çok", "ama", "için", "bir", "ve", "da",
+    ];
+    // Not: Test edildi — oturumsuz, anahtar kelime aramasının döndürdüğü yorumlar zaten
+    // kaydırmayla gelen kümede; tavanın ötesine +0 ekliyor. Bu yüzden VARSAYILAN KAPALI;
+    // denemek için KW=1. Tam kapsam için giriş modu (LOGIN=1) kullanın.
+    if (process.env.KW === "1" && (!total || merged.size < total)) {
+      console.log(`\n=== Anahtar kelime augmentasyonu (${KEYWORDS.length} terim) ===`);
+      const BATCH = 4;
+      for (let i = 0; i < KEYWORDS.length; i += BATCH) {
+        const batch = KEYWORDS.slice(i, i + BATCH);
+        const before = merged.size;
+        const arrays = await Promise.all(batch.map((t, j) => runKeywordPass(t, j)));
+        for (const arr of arrays) for (const r of arr) merged.set(keyOf(r), r);
+        console.log(`  [${batch.join(", ")}]: +${merged.size - before} → toplam ${merged.size}${total ? ` / ${total}` : ""}`);
+        if (total && merged.size >= total) { console.log("✓ Hedefe ulaşıldı (anahtar kelime)."); break; }
       }
     }
 
