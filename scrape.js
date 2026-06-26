@@ -10,16 +10,61 @@
 // Kaynak yöntem referansları: gosom/google-maps-scraper, georgekhananaev/google-reviews-scraper-pro
 
 import { chromium } from "playwright";
-import { writeFile, mkdir, readFile } from "node:fs/promises";
+import { writeFile, mkdir, readFile, access, rm } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 import { getAllBranches } from "./branches.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, "data");
+export const PROFILE_DIR = process.env.PROFILE_DIR || join(__dirname, ".gprofile");
+const LOGIN_MARKER = join(PROFILE_DIR, ".logged_in");
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Profilde kayıtlı Google oturumu var mı? (işaret dosyası — hızlı kontrol)
+export async function isLoggedIn() {
+  try { await access(LOGIN_MARKER); return true; } catch { return false; }
+}
+
+const hasGoogleSession = async (context) =>
+  (await context.cookies("https://www.google.com")).some((c) =>
+    ["SID", "SAPISID", "__Secure-1PSID"].includes(c.name)
+  );
+
+// Görünür Chrome açar, kullanıcı Google'a giriş yapana kadar bekler, oturumu profile kaydeder.
+export async function runLogin({ timeoutMs = 8 * 60 * 1000 } = {}) {
+  const ctxOpts = { userAgent: UA, locale: "tr-TR", timezoneId: "Europe/Istanbul", viewport: { width: 1280, height: 900 } };
+  const args = ["--disable-blink-features=AutomationControlled", "--no-sandbox", "--lang=tr-TR"];
+  await mkdir(DATA_DIR, { recursive: true });
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(PROFILE_DIR, { headless: false, channel: "chrome", args, ...ctxOpts });
+  } catch {
+    context = await chromium.launchPersistentContext(PROFILE_DIR, { headless: false, args, ...ctxOpts });
+  }
+  try {
+    const page = context.pages()[0] || (await context.newPage());
+    if (await hasGoogleSession(context)) { await writeFile(LOGIN_MARKER, "1"); return { loggedIn: true, already: true }; }
+    await page.goto("https://accounts.google.com/", { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() => {});
+    const deadline = Date.now() + timeoutMs;
+    while (Date.now() < deadline && !(await hasGoogleSession(context))) await sleep(2000);
+    const ok = await hasGoogleSession(context);
+    if (ok) await writeFile(LOGIN_MARKER, "1");
+    return { loggedIn: ok };
+  } finally {
+    await context.close().catch(() => {});
+  }
+}
+
+// Oturumu sıfırla (çıkış): profili siler.
+export async function clearLogin() {
+  await rm(PROFILE_DIR, { recursive: true, force: true }).catch(() => {});
+  return { loggedIn: false };
+}
 
 // PLACE_URL'den arama URL'i bileşenlerini çıkar.
 function buildSearchUrl(placeUrl, name) {
@@ -27,8 +72,6 @@ function buildSearchUrl(placeUrl, name) {
   const at = coords ? `/@${coords[1]},${coords[2]},17z` : "";
   return `https://www.google.com/maps/search/${encodeURIComponent(name)}${at}?hl=tr`;
 }
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Sayfa içinde çalışan kurulum: kaydırıcı bulma, kart ayıklama ve birikimli toplama.
 // Birikim sayfa içinde (window.__acc) tutulur; her adımda yalnızca sayı Node'a döner,
@@ -233,6 +276,7 @@ export async function runScrape(
     headless = process.env.HEADLESS !== "0",
     maxScrolls = 600,
     maxRounds = Number(process.env.MAX_ROUNDS) || 12,
+    login = process.env.LOGIN === "1" || process.env.USE_PROFILE === "1",
   } = {}
 ) {
   const outFile = join(DATA_DIR, `reviews-${branch.slug}.json`);
@@ -243,8 +287,7 @@ export async function runScrape(
 
   // GİRİŞ MODU: LOGIN=1 ile kalıcı profil kullanılır (Google oturumu .gprofile'da saklanır).
   // Oturum açıldığında Google daha fazla (genelde tüm) yorumu sunar -> tavan yükselir.
-  const LOGIN = process.env.LOGIN === "1" || process.env.USE_PROFILE === "1";
-  const PROFILE_DIR = process.env.PROFILE_DIR || join(__dirname, ".gprofile");
+  const LOGIN = login;
   if (LOGIN) console.log(`Giriş modu: AÇIK (profil: ${PROFILE_DIR})`);
 
   const launchArgs = {
@@ -313,15 +356,18 @@ export async function runScrape(
     if (LOGIN) {
       if (await isLoggedIn()) {
         console.log("Kayıtlı Google oturumu bulundu, devam ediliyor.");
+        await writeFile(LOGIN_MARKER, "1").catch(() => {});
       } else if (headless) {
-        console.warn("UYARI: Giriş modu açık ama oturum yok ve headless. Önce şunu çalıştırıp giriş yapın:\n  LOGIN=1 HEADLESS=0 npm run scrape " + branch.slug);
+        console.warn("UYARI: Giriş modu açık ama oturum yok ve headless. Önce arayüzden 'Google ile giriş yap' veya:\n  LOGIN=1 HEADLESS=0 npm run scrape " + branch.slug);
       } else {
         console.log("\n>>> GİRİŞ GEREKLİ: Açılan pencerede Google hesabınızla giriş yapın.");
         console.log(">>> Giriş algılanınca otomatik devam edecek (en fazla ~8 dk beklenir)...\n");
         await warm.goto("https://accounts.google.com/", { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() => {});
         const deadline = Date.now() + 8 * 60 * 1000;
         while (Date.now() < deadline && !(await isLoggedIn())) await sleep(3000);
-        console.log((await isLoggedIn()) ? "✓ Giriş algılandı, çekime başlanıyor." : "Giriş algılanamadı; yine de denenecek.");
+        const ok = await isLoggedIn();
+        if (ok) await writeFile(LOGIN_MARKER, "1").catch(() => {});
+        console.log(ok ? "✓ Giriş algılandı, çekime başlanıyor." : "Giriş algılanamadı; yine de denenecek.");
       }
     }
     await warm.close().catch(() => {});

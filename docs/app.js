@@ -21,6 +21,8 @@ const els = {
   totalCount: document.getElementById("total-count"),
   scrapedAt: document.getElementById("scraped-at"),
   refreshBtn: document.getElementById("refresh-btn"),
+  loginBtn: document.getElementById("login-btn"),
+  loginStatus: document.getElementById("login-status"),
   branchSelect: document.getElementById("branch-select"),
   addForm: document.getElementById("add-branch"),
   addUrl: document.getElementById("add-url"),
@@ -333,17 +335,70 @@ async function addBranch(e) {
   }
 }
 
+// ---------- Google giriş (tam kapsam) ----------
+function setLoginUI(loggedIn) {
+  if (!els.loginBtn) return;
+  els.loginBtn.dataset.state = loggedIn ? "in" : "out";
+  els.loginBtn.querySelector(".btn-label").textContent = loggedIn ? "Çıkış" : "Google ile giriş";
+  els.loginStatus.textContent = loggedIn ? "Google: giriş yapıldı ✓" : "";
+}
+
+async function refreshLoginStatus() {
+  try {
+    const r = await fetch("/api/login-status");
+    const j = await r.json();
+    setLoginUI(!!j.loggedIn);
+    return !!j.loggedIn;
+  } catch {
+    setLoginUI(false);
+    return false;
+  }
+}
+
+async function handleLogin() {
+  if (els.loginBtn.dataset.state === "in") {
+    if (!confirm("Google oturumu silinsin mi?")) return;
+    els.loginBtn.disabled = true;
+    try { await fetch("/api/logout", { method: "POST" }); } catch {}
+    await refreshLoginStatus();
+    els.loginBtn.disabled = false;
+    return;
+  }
+  els.loginBtn.disabled = true;
+  els.loginStatus.textContent = "Tarayıcı açıldı — açılan pencerede Google'a giriş yapın…";
+  try {
+    const r = await fetch("/api/login", { method: "POST" });
+    const j = await r.json();
+    if (j.loggedIn) {
+      setLoginUI(true);
+      els.loginStatus.textContent = "Giriş yapıldı ✓ — artık 'Yenile' tüm yorumları çeker.";
+    } else {
+      setLoginUI(false);
+      els.loginStatus.textContent = "Giriş algılanamadı, tekrar deneyin.";
+    }
+  } catch (e) {
+    els.loginStatus.textContent = "Giriş hatası: " + e.message;
+  } finally {
+    els.loginBtn.disabled = false;
+  }
+}
+
 // Şube seçiciyi doldur ve ilk şubeyi yükle.
 async function init() {
   const { branches, staticMode } = await fetchBranches();
   state.staticMode = staticMode;
 
-  // Statik barındırmada arka uç yok -> "Yenile" ve "şube ekle" gizli.
+  // Statik barındırmada arka uç yok -> "Yenile", "şube ekle", "giriş" gizli.
   if (staticMode) {
     if (els.refreshBtn) els.refreshBtn.style.display = "none";
     if (els.addForm) els.addForm.style.display = "none";
-  } else if (els.addForm) {
-    els.addForm.addEventListener("submit", addBranch);
+    if (els.loginBtn) els.loginBtn.style.display = "none";
+  } else {
+    if (els.addForm) els.addForm.addEventListener("submit", addBranch);
+    if (els.loginBtn) {
+      els.loginBtn.addEventListener("click", handleLogin);
+      refreshLoginStatus();
+    }
   }
 
   if (!branches.length) {

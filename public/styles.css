@@ -157,6 +157,20 @@ h1 {
   content: "…";
 }
 
+.btn-ghost {
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.btn-ghost:hover {
+  background: var(--accent-soft);
+}
+
+.login-state {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
 /* ---------- Layout ---------- */
 .container {
   max-width: 880px;

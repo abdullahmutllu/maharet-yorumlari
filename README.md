@@ -33,7 +33,13 @@ npm start                 # http://localhost:4545 (şube seçici + arama + filtr
 ### Tam kapsam — Giriş modu (opsiyonel)
 
 Oturum açmadan Google, kaydırmada sunduğu yorumları sınırlar (örn. bir şubede
-~%89'da tıkanır). **Tüm yorumlara** ulaşmak için tek seferlik Google girişi:
+~%89'da tıkanır). **Tüm yorumlara** ulaşmak için tek seferlik Google girişi.
+
+**Arayüzden (en kolay):** `npm start` → http://localhost:4545 → sağ üstte
+**"Google ile giriş"** → açılan pencerede giriş yap → sonra **"Yenile"** / **"Topla"**
+artık oturumlu (tam kapsam) çalışır. (Bu buton yalnızca lokalde görünür; statik canlı sitede yoktur.)
+
+**Komut satırından:**
 
 ```bash
 LOGIN=1 HEADLESS=0 npm run scrape izmir   # açılan pencerede Google'a giriş yap
